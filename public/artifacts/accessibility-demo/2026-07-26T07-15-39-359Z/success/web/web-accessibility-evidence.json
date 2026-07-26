@@ -1,0 +1,139 @@
+{
+  "platform": "web",
+  "runner": "playwright",
+  "evidenceMode": "live",
+  "fixtureMode": "success",
+  "observedOutcome": "discounted_total_1799_visible",
+  "interactionMode": "keyboard",
+  "controls": {
+    "openCart": {
+      "tagName": "button",
+      "explicitRole": null,
+      "ariaLabel": null,
+      "text": "Cart · 1",
+      "testId": "open-cart",
+      "role": "button",
+      "accessibleName": "Cart · 1",
+      "ariaSnapshot": "- button \"Cart · 1\""
+    },
+    "couponInput": {
+      "tagName": "input",
+      "explicitRole": null,
+      "ariaLabel": "Coupon code",
+      "text": "",
+      "testId": "coupon-input",
+      "role": "textbox",
+      "accessibleName": "Coupon code",
+      "ariaSnapshot": "- textbox \"Coupon code\""
+    },
+    "applyCoupon": {
+      "tagName": "button",
+      "explicitRole": null,
+      "ariaLabel": null,
+      "text": "Apply",
+      "testId": "apply-coupon",
+      "role": "button",
+      "accessibleName": "Apply",
+      "ariaSnapshot": "- button \"Apply\""
+    },
+    "status": {
+      "tagName": "p",
+      "explicitRole": "status",
+      "ariaLabel": null,
+      "text": "",
+      "testId": "coupon-status",
+      "role": "status",
+      "accessibleName": "",
+      "ariaSnapshot": "- status"
+    }
+  },
+  "announcements": [
+    {
+      "text": "Coupon SAVE10 applied",
+      "at": "2026-07-26T07:15:50.086Z"
+    }
+  ],
+  "evidence": [
+    {
+      "version": "1.0",
+      "platform": "web",
+      "intent": "find_control",
+      "status": "passed",
+      "accessibleName": null,
+      "role": "multiple",
+      "state": null,
+      "focusOrder": [],
+      "postActionFocus": null,
+      "announcement": null,
+      "announcementProof": "not_observed",
+      "artifactRefs": [
+        "/Users/alokgudikote/AndroidStudioProjects/AI/Bandersnatch/demo/artifacts/accessibility-demo/2026-07-26T07-15-39-359Z/success/web/web-accessibility-final.png",
+        "/Users/alokgudikote/AndroidStudioProjects/AI/Bandersnatch/demo/artifacts/accessibility-demo/2026-07-26T07-15-39-359Z/success/web/web-accessibility-evidence.json"
+      ]
+    },
+    {
+      "version": "1.0",
+      "platform": "web",
+      "intent": "assert_accessible_name",
+      "status": "passed",
+      "accessibleName": "Cart · 1; Coupon code; Apply",
+      "role": "button; textbox; button",
+      "state": null,
+      "focusOrder": [],
+      "postActionFocus": null,
+      "announcement": null,
+      "announcementProof": "not_observed",
+      "artifactRefs": [
+        "/Users/alokgudikote/AndroidStudioProjects/AI/Bandersnatch/demo/artifacts/accessibility-demo/2026-07-26T07-15-39-359Z/success/web/web-accessibility-final.png",
+        "/Users/alokgudikote/AndroidStudioProjects/AI/Bandersnatch/demo/artifacts/accessibility-demo/2026-07-26T07-15-39-359Z/success/web/web-accessibility-evidence.json"
+      ]
+    },
+    {
+      "version": "1.0",
+      "platform": "web",
+      "intent": "assert_focus_logical",
+      "status": "passed",
+      "accessibleName": null,
+      "role": null,
+      "state": null,
+      "focusOrder": [
+        "Cart · 1",
+        "Coupon code",
+        "Apply"
+      ],
+      "postActionFocus": "Apply",
+      "announcement": null,
+      "announcementProof": "not_observed",
+      "artifactRefs": [
+        "/Users/alokgudikote/AndroidStudioProjects/AI/Bandersnatch/demo/artifacts/accessibility-demo/2026-07-26T07-15-39-359Z/success/web/web-accessibility-final.png",
+        "/Users/alokgudikote/AndroidStudioProjects/AI/Bandersnatch/demo/artifacts/accessibility-demo/2026-07-26T07-15-39-359Z/success/web/web-accessibility-evidence.json"
+      ]
+    },
+    {
+      "version": "1.0",
+      "platform": "web",
+      "intent": "assert_announcement",
+      "status": "passed",
+      "accessibleName": "status",
+      "role": "status",
+      "state": null,
+      "focusOrder": [],
+      "postActionFocus": null,
+      "announcement": "Coupon SAVE10 applied",
+      "announcementProof": "programmatic",
+      "artifactRefs": [
+        "/Users/alokgudikote/AndroidStudioProjects/AI/Bandersnatch/demo/artifacts/accessibility-demo/2026-07-26T07-15-39-359Z/success/web/web-accessibility-final.png",
+        "/Users/alokgudikote/AndroidStudioProjects/AI/Bandersnatch/demo/artifacts/accessibility-demo/2026-07-26T07-15-39-359Z/success/web/web-accessibility-evidence.json"
+      ]
+    }
+  ],
+  "completion": "independent",
+  "evidenceBoundary": {
+    "programmaticAnnouncementObserved": true,
+    "screenReaderHeard": "not_tested"
+  },
+  "artifacts": {
+    "screenshot": "/Users/alokgudikote/AndroidStudioProjects/AI/Bandersnatch/demo/artifacts/accessibility-demo/2026-07-26T07-15-39-359Z/success/web/web-accessibility-final.png",
+    "rawEvidence": "/Users/alokgudikote/AndroidStudioProjects/AI/Bandersnatch/demo/artifacts/accessibility-demo/2026-07-26T07-15-39-359Z/success/web/web-accessibility-evidence.json"
+  }
+}

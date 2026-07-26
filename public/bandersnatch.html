@@ -1,0 +1,665 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bandersnatch — Voice-authored cross-platform testing</title>
+  <meta name="description" content="Interactive product concept and visual PRD for Bandersnatch.">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap');
+    :root {
+      --ink:#181d1b; --muted:#67706c; --paper:#f4f1e9; --panel:#fffdf7;
+      --line:#d9d7cf; --green:#1f684c; --green2:#dff0e6; --lime:#c6f04d;
+      --red:#b94235; --red2:#f9e5df; --amber:#a56c00; --shadow:0 22px 55px rgba(25,34,29,.11);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:Manrope,system-ui,sans-serif}
+    button,input,textarea{font:inherit}
+    button{cursor:pointer}
+    .shell{min-height:100vh}
+    header{height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 4.5vw;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(244,241,233,.94);backdrop-filter:blur(16px);z-index:20}
+    .brand{display:flex;gap:12px;align-items:center;font-weight:800;letter-spacing:-.03em}
+    .brandmark{width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--lime);display:grid;place-items:center;font-size:17px}
+    .tabs{display:flex;gap:6px;background:#e9e6de;padding:4px;border-radius:12px}
+    .tab{border:0;background:transparent;border-radius:9px;padding:9px 15px;font-size:13px;font-weight:700;color:var(--muted)}
+    .tab.active{background:var(--panel);color:var(--ink);box-shadow:0 2px 8px #00000010}
+    .status{font:500 11px DM Mono,monospace;text-transform:uppercase;letter-spacing:.08em;display:flex;align-items:center;gap:8px}
+    .status i{width:8px;height:8px;border-radius:50%;background:#42a66c;box-shadow:0 0 0 4px #42a66c22}
+    main{max-width:1500px;margin:auto;padding:42px 4.5vw 80px}
+    .view{display:none}.view.active{display:block}
+    .eyebrow{font:500 11px DM Mono,monospace;text-transform:uppercase;letter-spacing:.12em;color:var(--green)}
+    h1{font-size:clamp(38px,5vw,74px);line-height:.98;letter-spacing:-.065em;margin:16px 0 22px;max-width:920px}
+    .lead{font-size:18px;line-height:1.65;color:var(--muted);max-width:680px}
+    .hero{display:grid;grid-template-columns:1.15fr .85fr;gap:70px;align-items:end;margin-bottom:54px}
+    .hero-note{padding:22px;border:1px solid var(--line);border-radius:18px;background:#ebe8df}
+    .hero-note strong{display:block;margin-bottom:6px}.hero-note span{font-size:13px;color:var(--muted);line-height:1.5}
+    .workspace{display:grid;grid-template-columns:minmax(330px,.82fr) minmax(500px,1.18fr);gap:20px}
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:22px;box-shadow:0 5px 20px #19221d08;overflow:hidden}
+    .card-head{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;border-bottom:1px solid var(--line)}
+    .card-head h2{margin:0;font-size:16px;letter-spacing:-.02em}.stepno{font:500 11px DM Mono;color:var(--muted)}
+    .record{padding:24px}
+    .langrow{display:flex;gap:8px;margin-bottom:20px}
+    .chip{border:1px solid var(--line);background:white;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700}
+    .chip.on{border-color:var(--green);background:var(--green2);color:var(--green)}
+    .wavebox{height:160px;border-radius:17px;background:var(--ink);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+    .wave{height:54px;display:flex;align-items:center;gap:5px}
+    .wave i{display:block;width:4px;height:var(--h);border-radius:4px;background:var(--lime);opacity:.82;animation:pulse 1.2s ease-in-out infinite;animation-delay:var(--d)}
+    @keyframes pulse{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
+    .mic{position:absolute;bottom:15px;right:15px;border:0;width:42px;height:42px;border-radius:50%;background:var(--lime);font-size:18px}
+    .recording-label{position:absolute;left:17px;top:15px;color:#c8d0cc;font:500 10px DM Mono;text-transform:uppercase;letter-spacing:.1em}
+    .transcript{margin-top:18px;background:#efede6;border-radius:14px;padding:16px}
+    .transcript label{display:flex;justify-content:space-between;font:500 10px DM Mono;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    textarea{width:100%;border:0;background:transparent;resize:none;color:var(--ink);line-height:1.55;outline:none;height:78px;font-size:14px}
+    .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.meta span{font:500 10px DM Mono;padding:5px 8px;background:white;border-radius:6px;color:var(--muted)}
+    .primary{width:100%;margin-top:16px;border:0;background:var(--green);color:white;padding:13px 16px;border-radius:11px;font-weight:800;box-shadow:0 8px 18px #1f684c22}
+    .primary:hover{background:#18553e}.primary:disabled{opacity:.55}
+    .plan{padding:16px 22px 22px}
+    .plan-summary{display:flex;justify-content:space-between;align-items:center;background:var(--green2);padding:12px 14px;border-radius:11px;margin-bottom:12px;font-size:12px;color:var(--green)}
+    .intent{display:grid;grid-template-columns:28px 1fr auto;gap:12px;align-items:center;padding:13px 4px;border-bottom:1px solid #e6e3db}
+    .intent:last-child{border-bottom:0}.intent .n{font:500 10px DM Mono;width:25px;height:25px;background:#ebe8e0;border-radius:7px;display:grid;place-items:center}
+    .intent strong{display:block;font-size:13px}.intent small{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+    .tag{font:500 9px DM Mono;text-transform:uppercase;padding:5px 7px;border-radius:6px;background:#edebe5;color:var(--muted)}
+    .runarea{grid-column:1/-1;margin-top:4px}
+    .runner-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+    .runner{padding:20px 22px}.runner:first-child{border-right:1px solid var(--line)}
+    .runner-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px}.runner-title strong{font-size:13px}.dot{font:500 10px DM Mono;color:var(--green)}
+    .screen{background:#e9e7e0;border-radius:14px;padding:13px;display:grid;grid-template-columns:90px 1fr;gap:14px;min-height:170px}
+    .device{background:#fff;border:4px solid #222;border-radius:15px;padding:9px 7px;box-shadow:0 5px 12px #0002}
+    .browser{background:white;border-radius:8px;overflow:hidden;box-shadow:0 5px 12px #0002}.browserbar{height:18px;background:#e8e8e8}.browserbody{padding:12px}
+    .mockline{height:7px;background:#d7d9d7;border-radius:6px;margin:7px 0}.mockline.short{width:58%}.mockbtn{height:20px;background:var(--green);border-radius:5px;margin-top:13px}.mocktotal{font-size:12px;font-weight:800;margin-top:13px;color:var(--green)}
+    .steps-mini{display:flex;flex-direction:column;gap:7px}.mini{font-size:10px;display:flex;justify-content:space-between;padding:7px 8px;background:#f6f4ef;border-radius:7px}.mini b{color:var(--green)}
+    .report{margin-top:20px}.verdict{display:flex;align-items:center;justify-content:space-between;padding:22px;background:var(--red2);border-bottom:1px solid #e9cfc9}
+    .verdict-left{display:flex;gap:15px;align-items:center}.verdict-icon{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--red);color:white;font-weight:800}
+    .verdict h3{margin:0 0 4px;font-size:20px;letter-spacing:-.03em}.verdict p{margin:0;color:#7a4a43;font-size:12px}
+    .score{font:500 30px DM Mono;color:var(--red)}
+    .matrix{width:100%;border-collapse:collapse}.matrix th,.matrix td{text-align:left;padding:14px 18px;border-bottom:1px solid var(--line);font-size:12px}.matrix th{font:500 10px DM Mono;text-transform:uppercase;color:var(--muted);background:#faf8f2}
+    .pass{color:var(--green);font-weight:800}.fail{color:var(--red);font-weight:800}.evidence{color:var(--muted)}
+    .callout{margin:18px;padding:16px;border-left:3px solid var(--red);background:#f8f3ed;font-size:12px;line-height:1.6}
+    /* PRD */
+    .prd-top{display:flex;justify-content:space-between;align-items:flex-start;gap:35px;margin-bottom:34px}.prd-top h1{font-size:52px;margin-bottom:12px}.lock{padding:11px 15px;background:var(--green2);border:1px solid #b9dac7;color:var(--green);border-radius:11px;font:500 11px DM Mono;white-space:nowrap}
+    .prd-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:20px}.prd-card{padding:24px}.prd-card h2{font-size:17px;margin:0 0 18px}.prd-card h3{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:22px 0 8px}
+    .lock-table{display:grid;grid-template-columns:165px 1fr;border:1px solid var(--line);border-radius:13px;overflow:hidden}.lock-table div{padding:11px 13px;border-bottom:1px solid var(--line);font-size:12px}.lock-table div:nth-child(odd){font-weight:700;background:#f0eee8}.lock-table div:nth-last-child(-n+2){border-bottom:0}
+    .architecture{font:500 11px/1.8 DM Mono;background:var(--ink);color:#dfe8e2;padding:20px;border-radius:13px;white-space:pre;text-align:center;overflow:auto}.architecture em{color:var(--lime);font-style:normal}
+    .rubric-row{display:grid;grid-template-columns:1fr 44px 1.25fr;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:11px}.level{font:500 10px DM Mono;padding:5px 6px;text-align:center;background:#ebe8e0;border-radius:6px}.bar{height:6px;background:#e5e2db;border-radius:4px;overflow:hidden;margin-top:5px}.bar i{display:block;height:100%;width:var(--w);background:var(--green);border-radius:4px}
+    .timeline{position:relative;padding-left:26px}.timeline:before{content:"";position:absolute;left:7px;top:8px;bottom:14px;width:1px;background:var(--line)}.mile{position:relative;padding-bottom:18px}.mile:before{content:"";position:absolute;left:-23px;top:5px;width:9px;height:9px;border:3px solid var(--panel);background:var(--green);border-radius:50%;box-shadow:0 0 0 1px var(--green)}.mile strong{font-size:12px}.mile p{font-size:11px;color:var(--muted);margin:4px 0 0;line-height:1.5}
+    .risk{display:grid;grid-template-columns:16px 1fr;gap:10px;padding:9px 0;font-size:11px;border-bottom:1px solid var(--line)}.risk i{width:8px;height:8px;border-radius:50%;background:var(--amber);margin-top:4px}
+    .non-goals{display:flex;flex-wrap:wrap;gap:7px}.non-goals span{padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:10px;color:var(--muted)}
+    .phase-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.phase{position:relative;min-height:178px;padding:17px;border:1px solid var(--line);border-radius:14px;background:#f8f6f0}.phase:after{content:"→";position:absolute;right:-9px;top:47%;z-index:2;width:18px;height:18px;border:1px solid var(--line);border-radius:50%;background:var(--panel);display:grid;place-items:center;font:500 10px DM Mono;color:var(--muted)}.phase:nth-child(4):after,.phase:last-child:after{display:none}.phase span{font:500 10px DM Mono;color:var(--green);text-transform:uppercase}.phase strong{display:block;font-size:12px;margin:15px 0 7px}.phase p{font-size:10px;line-height:1.55;color:var(--muted);margin:0 0 16px}.phase b{position:absolute;left:17px;right:17px;bottom:15px;font-size:9px;color:var(--green)}.phase.current{background:var(--green);border-color:var(--green);color:white;box-shadow:0 10px 25px #1f684c25}.phase.current span,.phase.current p,.phase.current b{color:#e0f2e7}.phase.future{background:#efede7;border-style:dashed}
+    .footnote{text-align:center;margin-top:34px;color:var(--muted);font:500 10px DM Mono}
+    .deck{max-width:1280px;margin:0 auto}
+    .deck-head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:22px}
+    .deck-head h1{font-size:clamp(32px,4vw,56px);margin:10px 0 0}
+    .deck-stage{position:relative;background:#fff;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);aspect-ratio:16/9}
+    .deck-slide{position:absolute;inset:0;display:none;padding:3.2% 3.3%;background:#fff;color:#090b0a;overflow:hidden}
+    .deck-slide.active{display:flex;flex-direction:column}
+    .deck-slide h2{font-size:clamp(20px,2.7vw,39px);line-height:1.08;letter-spacing:-.045em;margin:0;max-width:94%}
+    .deck-slide p{font-size:clamp(10px,1.2vw,18px);line-height:1.45}
+    .deck-kicker{font:800 clamp(8px,.8vw,12px) DM Mono;text-transform:uppercase;letter-spacing:.03em}
+    .deck-page{position:absolute;right:3.3%;bottom:2.7%;font:500 clamp(8px,.75vw,11px) DM Mono}
+    .deck-title-slide{justify-content:center!important}.deck-title-slide .deck-kicker{position:absolute;top:6%;left:3.3%}
+    .deck-title-slide h2{font-size:clamp(36px,5.4vw,78px);max-width:820px;margin-bottom:4%}
+    .deck-title-slide p{max-width:570px;margin:0}
+    .deck-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:4%;margin-top:auto;margin-bottom:7%;position:relative}
+    .deck-cols:before{content:"";position:absolute;left:0;right:0;top:-22%;height:1px;background:#111}
+    .deck-col{position:relative}.deck-col:before{content:"";position:absolute;top:-23.5%;left:0;width:10px;height:10px;border-radius:50%;background:#111}
+    .deck-col small{display:block;font:800 clamp(8px,.8vw,12px) DM Mono;text-transform:uppercase;margin-bottom:16%}
+    .deck-col strong{display:block;font-size:clamp(13px,1.5vw,22px);line-height:1.2;margin-bottom:7px}
+    .deck-col span{display:block;font-size:clamp(9px,1vw,14px);line-height:1.45}
+    .deck-proof{display:grid;grid-template-columns:.9fr 1.1fr;gap:6%;align-items:center;flex:1}
+    .deck-proof-copy strong{display:block;font-size:clamp(15px,1.7vw,24px);margin-bottom:8px}
+    .deck-ui{border:1px solid #d9d9d9;border-radius:12px;padding:3%;background:#f7f6f1;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .deck-ui-panel{border:1px solid #ddd;background:white;border-radius:8px;padding:10px;min-height:82px}
+    .deck-ui-panel b{display:block;font-size:clamp(8px,.8vw,12px);margin-bottom:9px}.deck-ui-line{height:7px;background:#dfe3df;border-radius:4px;margin:6px 0}.deck-ui-line.short{width:60%}.deck-ui-pass{color:var(--green);font-weight:800}.deck-ui-fail{color:var(--red);font-weight:800}
+    .deck-two{display:grid;grid-template-columns:1fr 1fr;gap:3%;margin-top:auto;margin-bottom:5%}
+    .deck-panel{background:#f2f2f2;border-radius:8px;padding:5%;min-height:145px}
+    .deck-panel strong{display:block;font-size:clamp(13px,1.45vw,21px);margin-bottom:9px}.deck-panel span{display:block;font-size:clamp(9px,1vw,14px);line-height:1.5}
+    .deck-context{margin:3% 0 0;max-width:92%;font-size:clamp(9px,1vw,14px)!important}
+    .deck-end{justify-content:center!important}.deck-end h2{font-size:clamp(38px,5.2vw,74px);line-height:1.07;max-width:620px}.deck-end p{margin-top:5%;font:500 clamp(10px,1vw,14px) DM Mono}
+    .evidence-head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:24px}
+    .evidence-head h1{margin:8px 0 0}.evidence-summary{max-width:520px;color:var(--muted);font-size:13px;line-height:1.6}
+    .video-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+    .video-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}
+    .video-card video{display:block;width:100%;aspect-ratio:16/9;background:#101412;object-fit:contain}
+    .video-card.android video{aspect-ratio:9/16;max-height:520px}
+    .video-copy{padding:18px}.video-copy h2{font-size:17px;margin:0 0 7px}.video-copy p{font-size:12px;line-height:1.55;color:var(--muted);margin:0}
+    .video-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.video-meta span{font:600 9px DM Mono;text-transform:uppercase;padding:6px 8px;border:1px solid var(--line);border-radius:999px}
+    .video-boundary{margin-top:20px;padding:16px 18px;border-left:4px solid var(--green);background:var(--green2);font-size:12px;line-height:1.6}
+    .deck-tradeoff{display:none;position:absolute;left:3.3%;right:3.3%;bottom:3.8%;padding:14px 18px;background:#181d1b;color:#fff;border-left:5px solid var(--lime);box-shadow:0 10px 28px rgba(0,0,0,.22);text-align:left}
+    .deck-tradeoff.visible{display:block}
+    .deck-tradeoff b{display:block;color:var(--lime);font:700 11px DM Mono;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+    .deck-tradeoff span{display:block;font-size:14px;line-height:1.45}
+    .deck-controls{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:18px}
+    .deck-button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:10px;padding:10px 16px;font-weight:800}
+    .deck-button:hover{border-color:var(--green);color:var(--green)}
+    .deck-count{min-width:92px;text-align:center;font:500 12px DM Mono;color:var(--muted)}
+    .deck-help{text-align:center;color:var(--muted);font-size:11px;margin-top:10px}
+    .access-hero{display:grid;grid-template-columns:1.05fr .95fr;gap:28px;align-items:stretch;margin-bottom:22px}
+    .access-copy{padding:32px}.access-copy h1{font-size:clamp(38px,5vw,66px);margin:14px 0 18px}
+    .spoken-journey{background:var(--ink);color:white;padding:28px;border-radius:22px;display:flex;flex-direction:column;justify-content:space-between}
+    .spoken-journey blockquote{font-size:22px;line-height:1.55;margin:18px 0;color:#f4f1e9}
+    .spoken-journey small{color:#aebbb5;line-height:1.5}
+    .access-flow{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:20px 0}
+    .access-step{position:relative;padding:18px 14px;background:var(--panel);border:1px solid var(--line);border-radius:14px;min-height:118px}
+    .access-step:not(:last-child):after{content:"→";position:absolute;right:-10px;top:46%;z-index:2;width:20px;height:20px;display:grid;place-items:center;border-radius:50%;background:var(--lime);font-size:11px;font-weight:800}
+    .access-step b{display:block;font-size:12px;margin-bottom:8px}.access-step span{font-size:10px;line-height:1.5;color:var(--muted)}
+    .access-result{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .access-result .card{padding:24px}.access-result h2{margin:0 0 16px;font-size:17px}
+    .check-row{display:grid;grid-template-columns:1.25fr .8fr .8fr;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);font-size:11px}
+    .check-row:first-of-type{font:500 10px DM Mono;text-transform:uppercase;color:var(--muted)}
+    .spoken-verdict{background:var(--green2);border-left:4px solid var(--green);padding:18px;border-radius:10px;font-size:13px;line-height:1.7}
+    @media(max-width:1100px){.phase-grid{grid-template-columns:repeat(2,1fr)}.phase:nth-child(2n):after{display:none}}
+    @media(max-width:900px){header{padding:0 18px;height:auto;min-height:72px;gap:12px;flex-wrap:wrap}.status{display:none}.tabs{overflow-x:auto}.tab{white-space:nowrap}main{padding:30px 18px}.hero,.workspace,.prd-grid,.access-hero,.access-result{grid-template-columns:1fr}.hero{gap:20px}.runner-grid{grid-template-columns:1fr}.runner:first-child{border-right:0;border-bottom:1px solid var(--line)}.prd-top{display:block}.lock{display:inline-block;margin-top:8px}.lock-table{grid-template-columns:120px 1fr}.access-flow{grid-template-columns:1fr}.access-step:not(:last-child):after{content:"↓";right:calc(50% - 10px);top:auto;bottom:-15px}h1{font-size:43px}}
+    @media(max-width:580px){.phase-grid{grid-template-columns:1fr}.phase:after{display:none}}
+  </style>
+</head>
+<body>
+<div class="shell">
+  <header>
+    <div class="brand"><span class="brandmark">B</span> Bandersnatch</div>
+    <nav class="tabs" aria-label="Demo views">
+      <button class="tab active" data-view="product">Product demo</button>
+      <button class="tab" data-view="prd">Visual PRD</button>
+      <button class="tab" data-view="accessibility">Accessibility</button>
+      <button class="tab" data-view="evidence">Evidence videos</button>
+      <button class="tab" data-view="presentation">Presentation</button>
+    </nav>
+    <div class="status"><i></i> Public judge demo · evidence-labelled</div>
+  </header>
+  <main>
+    <section class="view active" id="product">
+      <div class="hero">
+        <div>
+          <div class="eyebrow">Voice-authored consistency testing</div>
+          <h1>Say the journey once.<br>Prove it everywhere.</h1>
+          <p class="lead">Turn a local-language customer journey into one approved test plan, run it across Android and Web, and see exactly where the experience drifts.</p>
+        </div>
+        <div class="hero-note"><strong>MVP golden path</strong><span>Apply coupon <b>SAVE10</b> in the cart and verify that both platforms show the same discounted outcome.</span></div>
+      </div>
+      <div class="workspace">
+        <article class="card">
+          <div class="card-head"><h2>Describe the journey</h2><span class="stepno">01 · Voice</span></div>
+          <div class="record">
+            <div class="langrow"><button class="chip on">Hindi + English</button><button class="chip">Kannada</button><button class="chip">Upload audio</button></div>
+            <div class="wavebox">
+              <span class="recording-label">Saaras v3 · translated</span>
+              <div class="wave" aria-hidden="true">
+                <i style="--h:35px;--d:-.1s"></i><i style="--h:52px;--d:-.3s"></i><i style="--h:26px;--d:-.7s"></i><i style="--h:44px;--d:-.2s"></i><i style="--h:62px;--d:-.6s"></i><i style="--h:38px;--d:-.8s"></i><i style="--h:49px;--d:-.4s"></i><i style="--h:29px;--d:-.5s"></i><i style="--h:57px;--d:-.2s"></i><i style="--h:40px;--d:-.9s"></i><i style="--h:24px;--d:-.4s"></i>
+              </div>
+              <button class="mic" id="mic" aria-label="Toggle demo recording">●</button>
+            </div>
+            <div class="transcript">
+              <label><span>Editable transcript</span><span>96% confidence</span></label>
+              <textarea aria-label="Editable transcript">Open the cart, enter coupon SAVE10, apply it, and verify that the discounted total is visible.</textarea>
+              <div class="meta"><span>hi-IN detected</span><span>8.4 sec</span><span>literal preserved: SAVE10</span></div>
+            </div>
+            <button class="primary" id="compile">Approve &amp; compile test</button>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-head"><h2>Platform-neutral plan</h2><span class="stepno">02 · Review</span></div>
+          <div class="plan">
+            <div class="plan-summary"><b>checkout.apply-coupon</b><span>4 valid intents · ready</span></div>
+            <div class="intent"><span class="n">01</span><div><strong>Open cart</strong><small>Navigate to the active cart</small></div><span class="tag">navigation</span></div>
+            <div class="intent"><span class="n">02</span><div><strong>Enter coupon</strong><small>Value · SAVE10</small></div><span class="tag">input</span></div>
+            <div class="intent"><span class="n">03</span><div><strong>Apply coupon</strong><small>Submit the coupon form</small></div><span class="tag">action</span></div>
+            <div class="intent"><span class="n">04</span><div><strong>Assert discount visible</strong><small>Discounted total must be shown</small></div><span class="tag">outcome</span></div>
+            <button class="primary" id="run">Run on Android + Web</button>
+          </div>
+        </article>
+        <article class="card runarea">
+          <div class="card-head"><h2>Live platform execution</h2><span class="stepno" id="runstate">03 · Ready</span></div>
+          <div class="runner-grid">
+            <div class="runner">
+              <div class="runner-title"><strong>Android · Maestro MCP</strong><span class="dot platform-status">● Connected</span></div>
+              <div class="screen">
+                <div class="device"><div class="mockline short"></div><div class="mockline"></div><div class="mockline"></div><div class="mockbtn"></div><div class="mocktotal">₹1,799</div></div>
+                <div class="steps-mini"><div class="mini">Open cart <b>✓</b></div><div class="mini">Enter SAVE10 <b>✓</b></div><div class="mini">Apply coupon <b>✓</b></div><div class="mini">Discount visible <b>✓</b></div></div>
+              </div>
+            </div>
+            <div class="runner">
+              <div class="runner-title"><strong>Web · Playwright MCP</strong><span class="dot platform-status">● Connected</span></div>
+              <div class="screen">
+                <div class="browser"><div class="browserbar"></div><div class="browserbody"><div class="mockline short"></div><div class="mockline"></div><div class="mockline"></div><div class="mockbtn"></div><div class="mocktotal" style="color:var(--red)">₹1,999</div></div></div>
+                <div class="steps-mini"><div class="mini">Open cart <b>✓</b></div><div class="mini">Enter SAVE10 <b>✓</b></div><div class="mini">Apply coupon <b>✓</b></div><div class="mini">Discount visible <b style="color:var(--red)">✕</b></div></div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+      <article class="card report" id="report">
+        <div class="verdict">
+          <div class="verdict-left"><span class="verdict-icon">!</span><div><h3>Flow is inconsistent</h3><p>Android completed the intended outcome; Web did not display the discounted total.</p></div></div>
+          <div class="score">75%</div>
+        </div>
+        <table class="matrix">
+          <thead><tr><th>Checkpoint</th><th>Android</th><th>Web</th><th>Consistency</th><th>Evidence</th></tr></thead>
+          <tbody>
+            <tr><td>Cart opened</td><td class="pass">Passed · 0.8s</td><td class="pass">Passed · 0.4s</td><td class="pass">Consistent</td><td class="evidence">2 screenshots</td></tr>
+            <tr><td>Coupon entered</td><td class="pass">SAVE10</td><td class="pass">SAVE10</td><td class="pass">Consistent</td><td class="evidence">Text + trace</td></tr>
+            <tr><td>Coupon applied</td><td class="pass">Accepted</td><td class="pass">Accepted</td><td class="pass">Consistent</td><td class="evidence">2 action logs</td></tr>
+            <tr><td>Discounted total</td><td class="pass">₹1,799</td><td class="fail">₹1,999</td><td class="fail">Inconsistent</td><td class="evidence">Annotated capture</td></tr>
+          </tbody>
+        </table>
+        <div class="callout"><b>First divergence · assert_discount_visible</b><br>Web acknowledged the coupon but retained the original total. Likely cause: the cart total did not refresh after the coupon response. This explanation is an inference; the captured totals are measured evidence.</div>
+      </article>
+    </section>
+
+    <section class="view" id="prd">
+      <div class="prd-top">
+        <div><div class="eyebrow">Visual product requirements · v0.1</div><h1>Bandersnatch MVP</h1><p class="lead">A six-hour proof that Indian-language voice can author one trustworthy cross-platform consistency test.</p></div>
+        <div class="lock">✓ IDEA LOCK APPROVED · 26 JUL 2026</div>
+      </div>
+      <div class="prd-grid">
+        <article class="card prd-card">
+          <h2>01 · Locked product contract</h2>
+          <div class="lock-table">
+            <div>User</div><div>Product or QA engineer responsible for Android and Web</div>
+            <div>Repeated job</div><div>Verify one shared release journey has the same intended outcome</div>
+            <div>Hard input</div><div>Under-30s Indian-language instruction with UI steps and literal coupon code</div>
+            <div>Final output</div><div>Approved plan + evidence-backed HTML consistency verdict</div>
+            <div>Sarvam edge</div><div>Voice Experience · Saaras v3 speech-to-English</div>
+            <div>MVP boundary</div><div>Android + desktop Web · coupon journey · four intents</div>
+          </div>
+          <h3>Job completion</h3>
+          <p style="font-size:12px;line-height:1.7;color:var(--muted)">The job is complete only when the user approves a structured plan, Android and Web execute it without manual repair, and the result is classified as <b>consistent</b>, <b>inconsistent</b>, or <b>incomparable</b>.</p>
+        </article>
+        <article class="card prd-card">
+          <h2>02 · Smallest architecture</h2>
+          <div class="architecture">[Local-language voice]
+          ↓
+<em>[Sarvam · Saaras v3]</em>
+          ↓
+[4-intent approved plan]
+       ↙     ↘
+[Maestro]   [Playwright]
+  Android       Web
+       ↘     ↙
+[Normalized evidence]
+          ↓
+<em>[Consistency verdict]</em></div>
+          <h3>Hard constraints</h3>
+          <div class="non-goals"><span>REST audio &lt;30s</span><span>Human approval</span><span>No secret persistence</span><span>No guessed intents</span><span>Semantic verdict first</span></div>
+        </article>
+        <article class="card prd-card">
+          <h2>03 · Rubric target vector</h2>
+          <div class="rubric-row"><div><b>Job completion</b><div class="bar"><i style="--w:80%"></i></div></div><span class="level">L4</span><span>One correct two-platform report; 3/3 runs for L5</span></div>
+          <div class="rubric-row"><div><b>Voice Experience</b><div class="bar"><i style="--w:60%"></i></div></div><span class="level">L3</span><span>Hindi + one code-mixed case preserves intent and SAVE10</span></div>
+          <div class="rubric-row"><div><b>Creativity</b><div class="bar"><i style="--w:80%"></i></div></div><span class="level">L4</span><span>One intent plan resolves into two distinct UI adapters</span></div>
+          <div class="rubric-row"><div><b>Memory</b><div class="bar"><i style="--w:60%"></i></div></div><span class="level">L3</span><span>Plan and report survive refresh in the demo session</span></div>
+          <div class="rubric-row"><div><b>Impact</b><div class="bar"><i style="--w:60%"></i></div></div><span class="level">L3</span><span>Measured manual baseline versus one-run completion time</span></div>
+          <div class="rubric-row"><div><b>Delight</b><div class="bar"><i style="--w:60%"></i></div></div><span class="level">L3</span><span>First-time user corrects, runs, and understands drift unaided</span></div>
+        </article>
+        <article class="card prd-card">
+          <h2>04 · Six-hour build ladder</h2>
+          <div class="timeline">
+            <div class="mile"><strong>M1 · Prove the hard path</strong><p>Live Sarvam call, hardcoded Android + Web run, ugly joined report.</p></div>
+            <div class="mile"><strong>M2 · Compile and review</strong><p>Strict four-intent schema, editable transcript, visible uncertainty.</p></div>
+            <div class="mile"><strong>M3 · Compare evidence</strong><p>Normalized results and three guarded verdicts.</p></div>
+            <div class="mile"><strong>M4 · Repeat and recover</strong><p>Three cases, reset, resume, and one timeout recovery.</p></div>
+            <div class="mile"><strong>M5 · Integrate + publish</strong><p>One surface, public URL, another-device verification.</p></div>
+            <div class="mile"><strong>M6 · Freeze + rehearse</strong><p>No features. Fallbacks, three runs, two timed demos.</p></div>
+          </div>
+        </article>
+        <article class="card prd-card">
+          <h2>05 · Golden path acceptance</h2>
+          <div class="intent"><span class="n">01</span><div><strong>Speak</strong><small>Hindi/code-mixed instruction under 30 seconds</small></div><span class="tag">voice</span></div>
+          <div class="intent"><span class="n">02</span><div><strong>Approve</strong><small>Review transcript, literals, and four intents</small></div><span class="tag">human</span></div>
+          <div class="intent"><span class="n">03</span><div><strong>Execute</strong><small>Android and Web run without code edits</small></div><span class="tag">test</span></div>
+          <div class="intent"><span class="n">04</span><div><strong>Decide</strong><small>Evidence supports a guarded verdict</small></div><span class="tag">output</span></div>
+          <h3>Acceptance test</h3>
+          <p style="font-size:12px;line-height:1.65"><b>A real spoken input produces the four-step approved plan, both targets run without editing code, and the report has a verdict plus evidence references.</b></p>
+        </article>
+        <article class="card prd-card">
+          <h2>06 · Risks &amp; deliberate cuts</h2>
+          <div class="risk"><i></i><div><b>Sarvam access or latency</b><br><span style="color:var(--muted)">Test before UI; retain verified fallback audio.</span></div></div>
+          <div class="risk"><i></i><div><b>Android/Web state drift</b><br><span style="color:var(--muted)">Use controlled demo surfaces and explicit reset.</span></div></div>
+          <div class="risk"><i></i><div><b>Evidence cannot normalize</b><br><span style="color:var(--muted)">Compare pass/fail + final visible total first.</span></div></div>
+          <div class="risk"><i></i><div><b>Public UI cannot reach Android</b><br><span style="color:var(--muted)">Keep local worker narrow; public report remains viewable.</span></div></div>
+          <h3>Non-goals</h3>
+          <div class="non-goals"><span>iOS</span><span>mWeb</span><span>Arbitrary apps</span><span>Pixel parity</span><span>Code fixes</span><span>Telephony</span><span>Streaming voice</span><span>Device farms</span></div>
+        </article>
+        <article class="card prd-card" style="grid-column:1/-1">
+          <h2>07 · Product implementation phases</h2>
+          <p style="font-size:12px;color:var(--muted);margin:-7px 0 22px">The buildathon ladder controls today’s clock. These phases control how the product matures without skipping evidence or reliability gates.</p>
+          <div class="phase-grid">
+            <div class="phase current"><span>P0</span><strong>Dependency proof</strong><p>Sarvam + Maestro + Playwright each succeed on the golden case.</p><b>Exit · three hard dependencies proven</b></div>
+            <div class="phase"><span>P1</span><strong>Vertical slice</strong><p>Voice → approved plan → two runners → guarded verdict.</p><b>Exit · one complete real job</b></div>
+            <div class="phase"><span>P2</span><strong>Evidence &amp; reliability</strong><p>Reset, state equivalence, first divergence, retry, three cases.</p><b>Exit · all three verdict paths verified</b></div>
+            <div class="phase"><span>P3</span><strong>Integrated surface</strong><p>One independently usable Record → Review → Run → Report flow.</p><b>Exit · first-time user succeeds unaided</b></div>
+            <div class="phase"><span>P4</span><strong>Demo hardening</strong><p>Fallback audio, saved report, repeated runs, timed rehearsals.</p><b>Exit · two successful 3-minute demos</b></div>
+            <div class="phase future"><span>P5</span><strong>Accessibility pilot</strong><p>Voice-authored screen-reader journey, focus evidence, Hindi spoken verdict.</p><b>Exit · tester completes it without sighted help</b></div>
+            <div class="phase future"><span>P6</span><strong>Contract expansion</strong><p>Versioned schema, more deterministic actions, scenario library.</p><b>Exit · three different journeys</b></div>
+            <div class="phase future"><span>P7</span><strong>CI &amp; history</strong><p>Policy exits, compatibility checks, exports, approved variances.</p><b>Exit · reproducible semantic CI gate</b></div>
+            <div class="phase future"><span>P8</span><strong>Platform expansion</strong><p>iOS, mWeb, bounded visual analysis, and remote workers.</p><b>Exit · measured reliability per capability</b></div>
+          </div>
+        </article>
+      </div>
+      <div class="footnote">SOURCE OF TRUTH · ../PRD.md + ../IDEA_SCOPE.md · Interactive review artifact</div>
+    </section>
+
+    <section class="view" id="accessibility">
+      <div class="access-hero">
+        <article class="card access-copy">
+          <div class="eyebrow">Product Phase 5 · concrete accessibility pilot</div>
+          <h1>Let the tester lead by voice.</h1>
+          <p class="lead">A blind or low-vision tester authors one screen-reader journey in Hindi, approves the same semantic plan, and hears where Android and Web stop offering an equivalent experience.</p>
+        </article>
+        <article class="spoken-journey">
+          <div>
+            <div class="eyebrow" style="color:var(--lime)">Hindi + literal test data</div>
+            <blockquote lang="hi">“कार्ट खोलो, कूपन फ़ील्ड ढूँढो, SAVE10 डालो, और जाँचो कि नया टोटल स्क्रीन रीडर में सुनाई देता है।”</blockquote>
+          </div>
+          <small>Saaras v3 translates the journey for the compiler while preserving <b>SAVE10</b>.</small>
+        </article>
+      </div>
+
+      <div class="access-flow" aria-label="Accessibility testing workflow">
+        <div class="access-step"><b>01 · Speak</b><span>Hindi or code-mixed journey through Saaras v3</span></div>
+        <div class="access-step"><b>02 · Approve</b><span>Accessible transcript and screen-reader intent plan</span></div>
+        <div class="access-step"><b>03 · Execute</b><span>Android and Web accessibility trees</span></div>
+        <div class="access-step"><b>04 · Compare</b><span>Name, reachability, focus, and announcement</span></div>
+        <div class="access-step"><b>05 · Hear</b><span>Hindi evidence summary through Bulbul v3</span></div>
+      </div>
+
+      <div class="access-result">
+        <article class="card">
+          <h2>Screen-reader parity evidence</h2>
+          <div class="check-row"><span>Checkpoint</span><span>Android</span><span>Web</span></div>
+          <div class="check-row"><b>Coupon field name</b><span class="pass">Coupon code</span><span class="pass">Coupon code</span></div>
+          <div class="check-row"><b>Apply reachable</b><span class="pass">Passed</span><span class="pass">Passed</span></div>
+          <div class="check-row"><b>Focus after submit</b><span class="pass">Result</span><span class="fail">Page top</span></div>
+          <div class="check-row"><b>New total announced</b><span class="pass">₹1,799</span><span class="fail">Silent</span></div>
+        </article>
+        <article class="card">
+          <h2>Spoken Hindi verdict</h2>
+          <div class="spoken-verdict" lang="hi"><b>वेब पर गंभीर पहुँच बाधा मिली।</b><br>कूपन लागू हुआ, लेकिन नया टोटल स्क्रीन रीडर में नहीं बताया गया। पहली बाधा: परिणाम की घोषणा।</div>
+          <p style="font-size:12px;line-height:1.7;color:var(--muted);margin:18px 0 0">Classification: <b class="fail">blocked on Web</b>. The visual report, transcript, and spoken summary remain equivalent outputs; voice is never the only path.</p>
+        </article>
+      </div>
+      <div class="footnote">PHASE 5 EXIT · A TESTER CAN SPEAK, APPROVE, RUN, AND HEAR THE VERDICT WITHOUT SIGHTED ASSISTANCE</div>
+    </section>
+
+    <section class="view" id="evidence">
+      <div class="evidence-head">
+        <div>
+          <div class="eyebrow">English baseline · no voice input</div>
+          <h1>Recorded platform evidence</h1>
+        </div>
+        <p class="evidence-summary">The fixed English journey is compiled once and executed against controlled Android and Web fixtures. These raw recordings establish the baseline before voice authoring is introduced.</p>
+      </div>
+      <div class="video-grid">
+        <article class="video-card android">
+          <video controls preload="metadata" src="artifacts/demo-recordings/android-success.mp4" aria-label="Android coupon success recording"></video>
+          <div class="video-copy">
+            <h2>Android · success</h2>
+            <p><b>SAVE10</b> is accepted and the discounted total reaches ₹1,799.</p>
+            <div class="video-meta"><span>15.9 seconds</span><span>Maestro</span><span>Success</span></div>
+          </div>
+        </article>
+        <article class="video-card android">
+          <video controls preload="metadata" src="artifacts/demo-recordings/android-failure.mp4" aria-label="Android invalid coupon recording"></video>
+          <div class="video-copy">
+            <h2>Android · invalid coupon</h2>
+            <p><b>FAIL10</b> is rejected and the original total remains ₹1,999.</p>
+            <div class="video-meta"><span>15.1 seconds</span><span>Maestro</span><span>Failure</span></div>
+          </div>
+        </article>
+        <article class="video-card">
+          <video controls preload="metadata" src="artifacts/demo-recordings/web-success.webm" aria-label="Web coupon success recording"></video>
+          <div class="video-copy">
+            <h2>Web · success</h2>
+            <p><b>SAVE10</b> is accepted and the discounted total reaches ₹1,799.</p>
+            <div class="video-meta"><span>1.4 seconds</span><span>Playwright</span><span>Success</span></div>
+          </div>
+        </article>
+        <article class="video-card">
+          <video controls preload="metadata" src="artifacts/demo-recordings/web-mismatch.webm" aria-label="Web seeded mismatch recording"></video>
+          <div class="video-copy">
+            <h2>Web · deliberate mismatch</h2>
+            <p>The coupon is accepted but the total remains ₹1,999, creating an evidence-backed inconsistency.</p>
+            <div class="video-meta"><span>1.2 seconds</span><span>Playwright</span><span>Inconsistent</span></div>
+          </div>
+        </article>
+        <article class="video-card">
+          <video controls preload="metadata" src="artifacts/demo-recordings/web-missing.webm" aria-label="Web missing evidence recording"></video>
+          <div class="video-copy">
+            <h2>Web · missing evidence</h2>
+            <p>The required total is absent, so Bandersnatch must return <b>incomparable</b> rather than guessing.</p>
+            <div class="video-meta"><span>1.2 seconds</span><span>Playwright</span><span>Incomparable</span></div>
+          </div>
+        </article>
+      </div>
+      <div class="video-boundary"><b>Evidence boundary:</b> these are English, non-voice platform recordings. Programmatic announcements are measured separately from confirmed screen-reader speech.</div>
+      <div class="video-boundary">
+        <b>A4 joined accessible reports:</b>
+        <a href="artifacts/accessibility-demo/2026-07-26T07-15-39-359Z/success/report.html" target="_blank">Consistent + Hindi audio</a> ·
+        <a href="artifacts/accessibility-demo/2026-07-26T07-15-39-359Z/mismatch/report.html" target="_blank">Inconsistent + Hindi audio</a> ·
+        <a href="artifacts/accessibility-demo/2026-07-26T07-15-39-359Z/missing/report.html" target="_blank">Incomparable + Hindi audio</a>
+      </div>
+      <div class="evidence-head" style="margin-top:36px">
+        <div>
+          <div class="eyebrow">Sarvam voice evidence · Hindi input and output</div>
+          <h1>Recorded voice proofs</h1>
+        </div>
+        <p class="evidence-summary">These recordings show live Hindi speech transcription, guarded transcript review, and the Hindi Bulbul verdict. Android evidence shown in the browser review recording is explicitly labelled mock.</p>
+      </div>
+      <div class="video-grid">
+        <article class="video-card">
+          <video controls preload="metadata" src="artifacts/demo-recordings/sarvam-voice-success.mp4" aria-label="Sarvam Hindi voice success recording"></video>
+          <div class="video-copy">
+            <h2>Hindi voice · successful plan</h2>
+            <p>Auto-detected <b>hi-IN</b>, preserved <b>SAVE10</b>, compiled four intents, and returned a consistent browser-review result.</p>
+            <div class="video-meta"><span>32.6 seconds</span><span>Saaras v3</span><span>Voice success</span></div>
+          </div>
+        </article>
+        <article class="video-card">
+          <video controls preload="metadata" src="artifacts/demo-recordings/sarvam-voice-failure.mp4" aria-label="Sarvam literal correction and mismatch recording"></video>
+          <div class="video-copy">
+            <h2>Hindi voice · guarded correction</h2>
+            <p>Sarvam initially returned “save ten”; Bandersnatch blocked approval until the literal became <b>SAVE10</b>, then exposed the seeded inconsistency.</p>
+            <div class="video-meta"><span>77.4 seconds</span><span>Human review</span><span>Failure recovery</span></div>
+          </div>
+        </article>
+        <article class="video-card">
+          <video controls preload="metadata" src="artifacts/demo-recordings/sarvam-accessibility-verdict.mp4" aria-label="Hindi Bulbul spoken accessibility verdict recording"></video>
+          <div class="video-copy">
+            <h2>Hindi spoken accessibility verdict</h2>
+            <p>The joined Android/Web report presents equivalent Hindi text and user-controlled Bulbul audio with adjustable playback speed.</p>
+            <div class="video-meta"><span>9.5 seconds</span><span>Bulbul v3</span><span>Accessible output</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="view" id="presentation">
+      <div class="deck">
+        <div class="deck-head">
+          <div>
+            <div class="eyebrow">Hackathon deck · 10 slides</div>
+            <h1>Bandersnatch presentation</h1>
+          </div>
+        </div>
+        <div class="deck-stage" id="deck-stage" aria-live="polite">
+          <article class="deck-slide deck-title-slide active" data-slide="1" aria-label="Slide 1 of 10">
+            <div class="deck-kicker">Sarvam Epoch Buildathon</div>
+            <h2>Say the journey once.<br>Prove it everywhere.</h2>
+            <p>Bandersnatch · Voice-authored consistency testing<br>for Android + Web</p>
+          </article>
+
+          <article class="deck-slide" data-slide="2" aria-label="Slide 2 of 10">
+            <h2>Cross-platform drift hides between two “passing” test suites</h2>
+            <div class="deck-cols">
+              <div class="deck-col"><small>01</small><strong>Duplicate authoring</strong><span>Teams describe the same journey twice—once for native, once for Web.</span></div>
+              <div class="deck-col"><small>02</small><strong>Fragmented evidence</strong><span>Results live in separate tools, screenshots, traces, and mental models.</span></div>
+              <div class="deck-col"><small>03</small><strong>Semantic mismatch</strong><span>A customer finds the outcome difference after release.</span></div>
+            </div>
+            <span class="deck-page">2</span>
+          </article>
+
+          <article class="deck-slide" data-slide="3" aria-label="Slide 3 of 10">
+            <h2>Bandersnatch turns speech into one governed product contract</h2>
+            <div class="deck-cols">
+              <div class="deck-col"><small>Speak</small><strong>Indian-language journey</strong><span>Saaras v3 translates the instruction. The engineer reviews literals and intent.</span></div>
+              <div class="deck-col"><small>Execute</small><strong>Two platform adapters</strong><span>Maestro drives Android. Playwright drives Web. Both resolve the same four intents.</span></div>
+              <div class="deck-col"><small>Decide</small><strong>One guarded verdict</strong><span>Normalized evidence yields consistent, inconsistent, or incomparable.</span></div>
+            </div>
+            <span class="deck-page">3</span>
+          </article>
+
+          <article class="deck-slide" data-slide="4" aria-label="Slide 4 of 10">
+            <h2>First divergence, proven</h2>
+            <div class="deck-proof">
+              <div class="deck-proof-copy"><strong>Golden journey</strong><p>Speak a Hindi or code-mixed coupon journey. Approve four intents. Watch Android and Web run. Reveal that Web accepted SAVE10 but kept the original total.</p></div>
+              <div class="deck-ui" aria-label="Illustrated Android and Web evidence report">
+                <div class="deck-ui-panel"><b>Voice input</b><div class="deck-ui-line short"></div><div class="deck-ui-line"></div><span class="deck-ui-pass">✓ Plan approved</span></div>
+                <div class="deck-ui-panel"><b>Intent plan</b><div class="deck-ui-line"></div><div class="deck-ui-line"></div><div class="deck-ui-line short"></div></div>
+                <div class="deck-ui-panel"><b>Android · ₹1,799</b><span class="deck-ui-pass">4 / 4 passed</span></div>
+                <div class="deck-ui-panel"><b>Web · ₹1,999</b><span class="deck-ui-fail">First divergence</span></div>
+              </div>
+            </div>
+            <span class="deck-page">4</span>
+          </article>
+
+          <article class="deck-slide" data-slide="5" aria-label="Slide 5 of 10">
+            <h2>A blind tester can author—and hear—the accessibility verdict</h2>
+            <div class="deck-cols">
+              <div class="deck-col"><small>Author</small><strong>Hindi screen-reader journey</strong><span>Saaras v3 translates the request while preserving SAVE10.</span></div>
+              <div class="deck-col"><small>Compare</small><strong>Accessibility evidence</strong><span>Android and Web expose names, focus, reachability, and announcements.</span></div>
+              <div class="deck-col"><small>Hear</small><strong>Spoken Hindi verdict</strong><span>Bulbul v3 explains the first barrier without requiring sighted assistance.</span></div>
+            </div>
+            <span class="deck-page">5</span>
+          </article>
+
+          <article class="deck-slide" data-slide="6" aria-label="Slide 6 of 10">
+            <h2>Yes: trustworthy execution needs a one-time adapter mapping</h2>
+            <p class="deck-context"><b>What the walkthrough does</b><br>Bandersnatch connects each platform-neutral intent to stable controls in the actual product. Mapping can be manual, imported, or discovered—but it cannot be guessed silently.</p>
+            <div class="deck-two">
+              <div class="deck-panel"><strong>Android</strong><span>Map intents to resource IDs or accessibility labels.<br><br>Inspect hierarchy · Run preflight · Version mappings</span></div>
+              <div class="deck-panel"><strong>Web</strong><span>Map intents to test IDs, roles, labels, or accessible names.<br><br>Inspect tree · Reject ambiguity · Revalidate</span></div>
+            </div>
+            <span class="deck-page">6</span>
+          </article>
+
+          <article class="deck-slide" data-slide="7" aria-label="Slide 7 of 10">
+            <h2>The payoff is shared intent; the cost is governed setup</h2>
+            <p class="deck-context"><b>Honest product tradeoff</b><br>Bandersnatch reduces duplicated authoring and manual comparison, but it does not eliminate platform knowledge. Teams invest once in stable mappings, fixtures, and outcome rules.</p>
+            <div class="deck-two">
+              <div class="deck-panel"><strong>What teams gain</strong><span>One journey contract<br>Synchronized evidence<br>Outcome-level drift detection</span></div>
+              <div class="deck-panel"><strong>What teams accept</strong><span>Initial adapter mapping<br>Fixture discipline<br>Maintenance when UI contracts change</span></div>
+            </div>
+            <span class="deck-page">7</span>
+          </article>
+
+          <article class="deck-slide" data-slide="8" aria-label="Slide 8 of 10">
+            <h2>The moat compounds in the governed consistency graph</h2>
+            <div class="deck-cols">
+              <div class="deck-col"><small>Intent contracts</small><strong>A shared vocabulary</strong><span>Versioned customer intent, independent of UI implementation.</span></div>
+              <div class="deck-col"><small>Adapter graph</small><strong>Proven mappings</strong><span>Intent to Android and Web controls, fixtures, and states.</span></div>
+              <div class="deck-col"><small>Decision memory</small><strong>Trusted outcomes</strong><span>Evidence history, accepted variances, and failure patterns.</span></div>
+            </div>
+            <span class="deck-page">8</span>
+          </article>
+
+          <article class="deck-slide" data-slide="9" aria-label="Slide 9 of 10">
+            <h2>Trust unlocks an accessibility workflow with agency</h2>
+            <div class="deck-cols">
+              <div class="deck-col"><small>Prove</small><strong>Semantic golden path</strong><span>Live Saaras, mapped Android + Web, evidence-backed verdict.</span></div>
+              <div class="deck-col"><small>Enable</small><strong>Accessibility pilot</strong><span>Blind tester authors, runs, and hears one screen-reader parity verdict.</span></div>
+              <div class="deck-col"><small>Scale</small><strong>Contract + CI</strong><span>More journeys, history, policy exports, iOS, mWeb, remote workers.</span></div>
+            </div>
+            <span class="deck-page">9</span>
+          </article>
+
+          <article class="deck-slide deck-end" data-slide="10" aria-label="Slide 10 of 10">
+            <div class="deck-kicker">B</div>
+            <h2>One journey.<br>Two platforms.<br>One reviewable truth.</h2>
+            <p>Voice-authored<br>Evidence-backed<br>Intent-first</p>
+          </article>
+
+          <div class="deck-tradeoff" id="deck-tradeoff" role="note" aria-live="polite">
+            <b>Accessibility pilot boundary</b>
+            <span>We use deterministic, human-reviewed Hindi verdict templates, so Sarvam Translate is not required. Translate becomes relevant only if we expand to dynamic explanations or arbitrary journeys.</span>
+          </div>
+        </div>
+        <div class="deck-controls" aria-label="Presentation controls">
+          <button class="deck-button" id="deck-prev" type="button">← Previous</button>
+          <span class="deck-count" id="deck-count">1 / 10</span>
+          <button class="deck-button" id="deck-next" type="button">Next →</button>
+        </div>
+        <div class="deck-help">Use the left and right arrow keys to navigate.</div>
+      </div>
+    </section>
+  </main>
+</div>
+<script>
+  const tabs = document.querySelectorAll('.tab');
+  const views = document.querySelectorAll('.view');
+  tabs.forEach(tab => tab.addEventListener('click', () => {
+    tabs.forEach(t => t.classList.remove('active'));
+    views.forEach(v => v.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.view).classList.add('active');
+    history.replaceState(null, '', '#' + tab.dataset.view);
+  }));
+  const initialView = location.hash.slice(1);
+  if (document.getElementById(initialView)) {
+    document.querySelector(`[data-view="${initialView}"]`)?.click();
+  }
+
+  const deckSlides = document.querySelectorAll('.deck-slide');
+  const slideCount = document.getElementById('deck-count');
+  const deckTradeoff = document.getElementById('deck-tradeoff');
+  const totalSlides = 10;
+  let currentSlide = 1;
+  const showSlide = number => {
+    currentSlide = ((number - 1 + totalSlides) % totalSlides) + 1;
+    deckSlides.forEach(item => {
+      const isCurrent = Number(item.dataset.slide) === currentSlide;
+      item.classList.toggle('active', isCurrent);
+      item.setAttribute('aria-hidden', isCurrent ? 'false' : 'true');
+    });
+    slideCount.textContent = `${currentSlide} / ${totalSlides}`;
+    deckTradeoff.classList.toggle('visible', currentSlide === 7);
+    deckTradeoff.setAttribute('aria-hidden', currentSlide === 7 ? 'false' : 'true');
+  };
+  showSlide(1);
+  document.getElementById('deck-prev').addEventListener('click', () => showSlide(currentSlide - 1));
+  document.getElementById('deck-next').addEventListener('click', () => showSlide(currentSlide + 1));
+  document.addEventListener('keydown', event => {
+    if (!document.getElementById('presentation').classList.contains('active')) return;
+    if (event.key === 'ArrowLeft') showSlide(currentSlide - 1);
+    if (event.key === 'ArrowRight' || event.key === ' ') {
+      event.preventDefault();
+      showSlide(currentSlide + 1);
+    }
+  });
+
+  const mic = document.getElementById('mic');
+  let recording = false;
+  mic.addEventListener('click', () => {
+    recording = !recording;
+    mic.textContent = recording ? '■' : '●';
+    document.querySelector('.recording-label').textContent = recording ? 'Recording · speak now' : 'Saaras v3 · translated';
+  });
+  document.getElementById('compile').addEventListener('click', e => {
+    e.currentTarget.textContent = '✓ Plan approved';
+    e.currentTarget.style.background = '#181d1b';
+  });
+  document.getElementById('run').addEventListener('click', e => {
+    const state = document.getElementById('runstate');
+    const statuses = document.querySelectorAll('.platform-status');
+    e.currentTarget.disabled = true;
+    e.currentTarget.textContent = 'Running both platforms…';
+    state.textContent = '03 · Executing';
+    statuses.forEach(s => s.textContent = '● Running');
+    setTimeout(() => {
+      e.currentTarget.textContent = '✓ Run complete';
+      state.textContent = '03 · Complete';
+      statuses.forEach(s => s.textContent = '● Evidence captured');
+      document.getElementById('report').scrollIntoView({behavior:'smooth', block:'start'});
+    }, 1200);
+  });
+</script>
+</body>
+</html>

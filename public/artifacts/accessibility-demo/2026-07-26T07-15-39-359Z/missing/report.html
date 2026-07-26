@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bandersnatch · incomparable</title>
+<style>
+:root{--ink:#14201a;--paper:#f4f2eb;--card:#fff;--green:#176b4d;--red:#a33a32;--line:#d8ddd8}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px system-ui,sans-serif}main{max-width:1060px;margin:auto;padding:42px 20px 72px}
+.hero,.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;margin-bottom:18px}.hero h1{font-size:clamp(38px,6vw,72px);margin:6px 0}.meta{font:700 11px ui-monospace,monospace;text-transform:uppercase}
+.verdict{color:var(--green)}.inconsistent,.failed,.blocked{color:var(--red)}table{width:100%;border-collapse:collapse}th,td{padding:13px;text-align:left;border-bottom:1px solid var(--line)}audio{display:block;width:100%;margin:16px 0}select{font:inherit;padding:8px;margin-left:8px}.boundary{border-left:4px solid var(--green)}
+a{color:var(--green)}@media(max-width:640px){th,td{padding:9px 4px;font-size:12px}}
+</style></head><body><main>
+<section class="hero" aria-labelledby="report-title"><div class="meta">Android + Web · accessibility evidence</div>
+<h1 id="report-title" class="incomparable">INCOMPARABLE</h1>
+<p>Completion: <b>blocked</b></p></section>
+<section class="card"><h2>Aligned evidence</h2><table><thead><tr><th>Intent</th><th>Android</th><th>Web</th><th>Decision</th></tr></thead><tbody><tr>
+    <th scope="row">find_control</th>
+    <td class="passed">passed</td>
+    <td class="passed">passed</td>
+    <td>Equivalent</td>
+  </tr><tr>
+    <th scope="row">assert_accessible_name</th>
+    <td class="passed">passed</td>
+    <td class="passed">passed</td>
+    <td>Equivalent</td>
+  </tr><tr>
+    <th scope="row">assert_focus_logical</th>
+    <td class="passed">passed</td>
+    <td class="passed">passed</td>
+    <td>Equivalent</td>
+  </tr><tr>
+    <th scope="row">assert_announcement</th>
+    <td class="passed">passed</td>
+    <td class="passed">passed</td>
+    <td>Equivalent</td>
+  </tr></tbody></table></section>
+<section class="card"><h2>Hindi spoken verdict</h2><p lang="hi">पर्याप्त सुलभ प्रमाण नहीं मिला, इसलिए दोनों प्लेटफ़ॉर्म की तुलना नहीं की जा सकती। यह यात्रा आवश्यक सुलभ प्रमाण के बिना पूरी नहीं हो सकी।</p><audio id="verdict-audio" controls preload="metadata" src="hindi-verdict.wav"></audio>
+       <label for="playback-rate">Playback speed</label>
+       <select id="playback-rate"><option value=".75">0.75×</option><option value="1" selected>1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option></select></section>
+<section class="card boundary"><h2>Evidence boundary</h2><p>Android programmatic announcement: <b>observed</b>. Web programmatic announcement: <b>observed</b>. Screen reader heard: <b>not tested</b>.</p></section>
+<section class="card"><h2>Artifacts</h2><p>Android runner: adb-uiautomator · Web runner: playwright (missing)</p></section>
+</main><script>const audio=document.getElementById("verdict-audio");const rate=document.getElementById("playback-rate");rate?.addEventListener("change",()=>{audio.playbackRate=Number(rate.value)});</script></body></html>
