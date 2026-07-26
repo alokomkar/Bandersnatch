@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Bandersnatch · Platform PRD</title>
+  <meta name="description" content="Visual product requirements and phased roadmap for the Bandersnatch cross-platform experience assurance platform.">
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap");
+    :root{
+      --ink:#17201c;--muted:#68726d;--paper:#f1efe8;--card:#fffdf7;--line:#d9d8d1;
+      --green:#1c694c;--green-soft:#dcefe4;--lime:#c6ef4e;--blue:#315d88;
+      --blue-soft:#e5edf5;--amber:#9a6710;--amber-soft:#f7ead0;--shadow:0 22px 65px rgba(20,32,25,.10)
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:Manrope,system-ui,sans-serif}
+    a{color:inherit}
+    header{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px 4vw;border-bottom:1px solid var(--line);background:rgba(241,239,232,.94);backdrop-filter:blur(16px)}
+    .brand{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:-.03em}
+    .brandmark{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--lime)}
+    nav{display:flex;gap:5px;padding:4px;border-radius:12px;background:#e7e4dc}
+    nav a{padding:8px 11px;border-radius:9px;color:var(--muted);font-size:11px;font-weight:800;text-decoration:none}
+    nav a:hover{background:var(--card);color:var(--ink)}
+    .status{font:500 10px DM Mono,monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--green)}
+    main{max-width:1440px;margin:auto;padding:58px 4vw 100px}
+    section{scroll-margin-top:90px;margin-bottom:70px}
+    .eyebrow{font:500 11px DM Mono,monospace;text-transform:uppercase;letter-spacing:.13em;color:var(--green)}
+    h1{max-width:1100px;margin:18px 0 24px;font-size:clamp(44px,6.8vw,94px);line-height:.95;letter-spacing:-.07em}
+    h2{margin:0;font-size:clamp(30px,4vw,56px);line-height:1;letter-spacing:-.055em}
+    h3{margin:0 0 8px;font-size:17px;letter-spacing:-.025em}
+    p{line-height:1.65}
+    .lead{max-width:780px;color:var(--muted);font-size:19px}
+    .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:54px;align-items:end}
+    .hero-card{padding:25px;border:1px solid var(--line);border-radius:20px;background:var(--card);box-shadow:var(--shadow)}
+    .hero-card strong{display:block;margin-bottom:9px;font-size:20px}
+    .hero-card p{margin:0;color:var(--muted);font-size:13px}
+    .boundary{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+    .boundary span{padding:8px 10px;border:1px solid var(--line);border-radius:999px;background:white;font:600 9px DM Mono,monospace;text-transform:uppercase;color:var(--muted)}
+    .boundary .now{border-color:#afd3bd;background:var(--green-soft);color:var(--green)}
+    .section-head{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:28px}
+    .section-head p{max-width:560px;margin:0;color:var(--muted);font-size:13px}
+    .principles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .principle{min-height:205px;padding:22px;border:1px solid var(--line);border-radius:18px;background:var(--card)}
+    .principle span{font:500 10px DM Mono,monospace;color:var(--green)}
+    .principle strong{display:block;margin:35px 0 10px;font-size:17px}
+    .principle p{margin:0;color:var(--muted);font-size:11px}
+    .architecture{display:grid;grid-template-columns:repeat(5,1fr);gap:11px;align-items:stretch}
+    .arch-step{position:relative;min-height:150px;padding:20px 17px;border:1px solid var(--line);border-radius:17px;background:var(--card)}
+    .arch-step:not(:last-child):after{content:"→";position:absolute;z-index:2;right:-17px;top:48%;display:grid;place-items:center;width:23px;height:23px;border-radius:50%;background:var(--lime);font-weight:800}
+    .arch-step b{display:block;margin-bottom:13px;font-size:13px}
+    .arch-step p{margin:0;color:var(--muted);font-size:10px}
+    .arch-step.core{border-color:var(--green);background:var(--green);color:white}
+    .arch-step.core p{color:#d9ede1}
+    .phases{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+    .phase{position:relative;display:grid;grid-template-columns:92px 1fr;gap:20px;min-height:270px;padding:24px;border:1px solid var(--line);border-radius:20px;background:var(--card);overflow:hidden}
+    .phase:before{content:"";position:absolute;inset:0 auto 0 0;width:5px;background:var(--green)}
+    .phase.future:before{background:var(--blue)}
+    .phase-number{font:800 42px DM Mono,monospace;letter-spacing:-.07em;color:var(--green)}
+    .future .phase-number{color:var(--blue)}
+    .phase-tag{display:inline-flex;padding:5px 8px;border-radius:999px;background:var(--green-soft);color:var(--green);font:700 8px DM Mono,monospace;text-transform:uppercase;letter-spacing:.07em}
+    .future .phase-tag{background:var(--blue-soft);color:var(--blue)}
+    .phase h3{margin:11px 0 7px;font-size:20px}
+    .phase p{margin:0 0 15px;color:var(--muted);font-size:11px}
+    .phase ul{display:grid;grid-template-columns:1fr 1fr;gap:7px 16px;margin:0;padding:0;list-style:none}
+    .phase li{position:relative;padding-left:13px;color:#3e4843;font-size:10px;line-height:1.45}
+    .phase li:before{content:"";position:absolute;left:0;top:5px;width:5px;height:5px;border-radius:50%;background:var(--green)}
+    .future li:before{background:var(--blue)}
+    .exit{grid-column:1/-1;margin-top:auto;padding-top:14px;border-top:1px solid var(--line);font:600 9px/1.5 DM Mono,monospace;color:var(--green)}
+    .future .exit{color:var(--blue)}
+    .release-model{display:grid;grid-template-columns:.9fr 1.1fr;gap:18px}
+    .panel{padding:25px;border:1px solid var(--line);border-radius:20px;background:var(--card)}
+    .panel p{color:var(--muted);font-size:12px}
+    .model-flow{display:grid;gap:9px;margin-top:18px}
+    .model-row{display:grid;grid-template-columns:125px 1fr;gap:14px;align-items:center;padding:12px;border-radius:12px;background:#f2f0ea}
+    .model-row b{font:700 9px DM Mono,monospace;text-transform:uppercase;color:var(--green)}
+    .model-row span{font-size:11px}
+    .lint{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    pre{margin:16px 0 0;padding:20px;border-radius:15px;background:var(--ink);color:#e6eee9;font:500 10px/1.7 DM Mono,monospace;white-space:pre-wrap;overflow:auto}
+    .rules{display:grid;gap:8px;margin-top:15px}
+    .rule{display:grid;grid-template-columns:55px 1fr;gap:12px;padding:10px 12px;border:1px solid var(--line);border-radius:10px}
+    .rule b{font:700 9px DM Mono,monospace;color:var(--green)}
+    .rule span{font-size:10px}
+    .readiness{width:100%;border-collapse:collapse;margin-top:18px}
+    .readiness th,.readiness td{padding:13px 14px;border-bottom:1px solid var(--line);text-align:left;font-size:11px}
+    .readiness th{font:600 9px DM Mono,monospace;text-transform:uppercase;color:var(--muted);background:#f5f3ed}
+    .ready{color:var(--green);font-weight:800}.assisted{color:var(--amber);font-weight:800}.blocked{color:#a53b34;font-weight:800}
+    .moat{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+    .moat-quote{display:flex;flex-direction:column;justify-content:space-between;min-height:340px;padding:34px;border-radius:24px;background:var(--ink);color:white}
+    .moat-quote blockquote{margin:0;font-size:clamp(26px,3.4vw,50px);line-height:1.08;letter-spacing:-.05em}
+    .moat-quote small{color:#afbbb4;line-height:1.5}
+    .graph-list{display:grid;gap:9px}
+    .graph-list div{padding:14px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+    .graph-list b{display:block;font-size:12px}.graph-list span{font-size:10px;color:var(--muted)}
+    footer{padding-top:28px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;color:var(--muted);font:500 9px DM Mono,monospace;text-transform:uppercase}
+    @media(max-width:1050px){.principles{grid-template-columns:repeat(2,1fr)}.architecture{grid-template-columns:1fr}.arch-step:not(:last-child):after{content:"↓";right:auto;left:calc(50% - 11px);top:auto;bottom:-17px}.phases{grid-template-columns:1fr}}
+    @media(max-width:780px){header{align-items:flex-start;flex-direction:column}.status{display:none}nav{width:100%;overflow:auto}.hero-grid,.release-model,.lint,.moat{grid-template-columns:1fr}.principles{grid-template-columns:1fr}.phase{grid-template-columns:60px 1fr}.phase-number{font-size:30px}.phase ul{grid-template-columns:1fr}.section-head{align-items:flex-start;flex-direction:column}main{padding-top:38px}}
+    @media print{header{position:static}body{background:white}.phase,.panel,.principle{break-inside:avoid}section{margin-bottom:38px}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="brand"><span class="brandmark">B</span>Bandersnatch Platform PRD</div>
+  <nav aria-label="PRD sections">
+    <a href="#definition">Definition</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#phases">Phases</a>
+    <a href="#release">Release model</a>
+    <a href="#lint">Compatibility</a>
+    <a href="#moat">Moat</a>
+  </nav>
+  <div class="status">Standalone review · 26 Jul 2026</div>
+</header>
+<main>
+  <section id="definition">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">Future product direction · separate from hackathon scope</div>
+        <h1>One experience contract. Every platform. Every release.</h1>
+        <p class="lead">Bandersnatch turns natural-language product intent into a versioned semantic contract, helps product code become test-compatible, discovers the real release experience, and proves whether Android, iOS, and Web deliver equivalent outcomes.</p>
+        <div class="boundary">
+          <span class="now">Current proof · Android + Web</span>
+          <span>Future · iOS</span><span>Repository aware</span><span>Release certified</span><span>Cloud executed</span>
+        </div>
+      </div>
+      <aside class="hero-card">
+        <span class="eyebrow">Product thesis</span>
+        <strong>Generation is not assurance.</strong>
+        <p>Tests become trustworthy only when Bandersnatch understands the application, validates that each platform exposes compatible semantics, observes the release build, and links every equivalence decision to evidence.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>Product principles</h2>
+      <p>The roadmap protects the original intent-first mechanic while moving from a controlled demo to a release-assurance platform.</p>
+    </div>
+    <div class="principles">
+      <article class="principle"><span>01</span><strong>Intent before selectors</strong><p>Journeys describe semantic actions and observable outcomes. Platform bindings remain replaceable implementation details.</p></article>
+      <article class="principle"><span>02</span><strong>Compatibility before execution</strong><p>Linting and onboarding reveal missing identifiers, accessibility semantics, reset paths, and unobservable results before cloud resources are spent.</p></article>
+      <article class="principle"><span>03</span><strong>Release evidence is truth</strong><p>Source and commits forecast impact. Only observed release artifacts can update the certified experience graph.</p></article>
+      <article class="principle"><span>04</span><strong>Equivalence, not sameness</strong><p>Different interfaces can be equivalent when they allow the same job to complete with compatible outcomes and accessibility.</p></article>
+    </div>
+  </section>
+
+  <section id="architecture">
+    <div class="section-head">
+      <h2>Smallest complete platform</h2>
+      <p>Voice and NLP are input adapters. The durable core is the contract, experience graph, platform execution, normalized evidence, and comparator.</p>
+    </div>
+    <div class="architecture">
+      <article class="arch-step"><b>1 · Product intent</b><p>Natural language, scenario library, requirements, or an AI coding agent proposes a journey.</p></article>
+      <article class="arch-step"><b>2 · Compatibility layer</b><p>Lint rules and repository mappings make controls, states, and outcomes discoverable.</p></article>
+      <article class="arch-step core"><b>3 · Experience graph</b><p>A release-versioned graph connects semantic concepts to Android, iOS, and Web implementations.</p></article>
+      <article class="arch-step"><b>4 · Platform execution</b><p>Maestro runs mobile builds; Playwright runs Web. All runners publish normalized evidence.</p></article>
+      <article class="arch-step"><b>5 · Assurance</b><p>The comparator produces equivalent, divergent, or incomparable with the first meaningful divergence.</p></article>
+    </div>
+  </section>
+
+  <section id="phases">
+    <div class="section-head">
+      <h2>Phased implementation</h2>
+      <p>Phases 0–5 describe the completed or active hackathon proof. Phases 6–10 are deliberately parked until the current demo is submitted and reviewed.</p>
+    </div>
+    <div class="phases">
+      <article class="phase">
+        <div class="phase-number">0–5</div>
+        <div>
+          <span class="phase-tag">Current proof</span>
+          <h3>Intent-first Android + Web MVP</h3>
+          <p>Prove speech-to-plan, review, paired execution, normalized evidence, guarded comparison, and the voice-led accessibility pilot on one controlled coupon journey.</p>
+          <ul><li>Four-intent contract</li><li>Android + Web adapters</li><li>Side-by-side evidence</li><li>Three guarded verdicts</li><li>Hindi authoring and verdict</li><li>Accessibility evidence boundaries</li></ul>
+        </div>
+        <div class="exit">EXIT · ONE REVIEWED JOURNEY PRODUCES TWO PLATFORM RUNS AND AN EVIDENCE-BACKED VERDICT.</div>
+      </article>
+
+      <article class="phase future">
+        <div class="phase-number">06</div>
+        <div>
+          <span class="phase-tag">Compatibility</span>
+          <h3>Experience contract and lint</h3>
+          <p>Define how product code declares stable semantic concepts and give developers or AI agents precise changes required for Bandersnatch compatibility.</p>
+          <ul><li><code>bandersnatch.yml</code></li><li>Android / Swift / Web rules</li><li>Accessible-name checks</li><li>Observable outcome checks</li><li>JSON + SARIF diagnostics</li><li>Focused acceptance tests</li></ul>
+        </div>
+        <div class="exit">EXIT · AN AI AGENT FIXES A SEEDED COMPATIBILITY FAILURE FROM A MACHINE-READABLE DIAGNOSTIC.</div>
+      </article>
+
+      <article class="phase future">
+        <div class="phase-number">07</div>
+        <div>
+          <span class="phase-tag">Discovery</span>
+          <h3>Release-build experience graph</h3>
+          <p>Inspect real release artifacts and certify how semantic concepts map to screens, routes, controls, states, and outcomes.</p>
+          <ul><li>Web release URL</li><li>Android ARM APK</li><li>iOS simulator build</li><li>DOM + accessibility trees</li><li>Ready / assisted / blocked</li><li>Immutable graph provenance</li></ul>
+        </div>
+        <div class="exit">EXIT · REQUIRED CONCEPTS ARE REACHABLE, OPERABLE, AND OBSERVABLE ON ALL THREE PLATFORMS.</div>
+      </article>
+
+      <article class="phase future">
+        <div class="phase-number">08</div>
+        <div>
+          <span class="phase-tag">Efficiency</span>
+          <h3>Commit-aware impact forecasting</h3>
+          <p>Use repository changes to target the next release discovery without treating source analysis as runtime truth.</p>
+          <ul><li>Diff and dependency graph</li><li>Concept impact index</li><li>Affected journey selection</li><li>Targeted re-discovery</li><li>Risk-triggered full crawl</li><li>Baseline graph comparison</li></ul>
+        </div>
+        <div class="exit">EXIT · BANDERSNATCH SELECTS THE MINIMUM SAFE PROBES FOR A COMMIT RANGE.</div>
+      </article>
+
+      <article class="phase future">
+        <div class="phase-number">09</div>
+        <div>
+          <span class="phase-tag">Cloud</span>
+          <h3>Android, iOS, and Web execution</h3>
+          <p>Launch real cross-platform runs from one public dashboard, return real recordings, and reveal results only after every required platform finishes.</p>
+          <ul><li>Cloud coordinator + queue</li><li>Maestro Cloud mobile workers</li><li>Playwright Web container</li><li>Concurrent execution</li><li>Short-lived artifact storage</li><li>Side-by-side playback</li></ul>
+        </div>
+        <div class="exit">EXIT · ONE APPROVED JOURNEY RETURNS THREE REAL EXECUTIONS AND A GUARDED VERDICT.</div>
+      </article>
+
+      <article class="phase future">
+        <div class="phase-number">10</div>
+        <div>
+          <span class="phase-tag">Release assurance</span>
+          <h3>Equivalence certification and history</h3>
+          <p>Turn the graph and execution engine into a repeatable release decision with explicit evidence, policy, history, and accepted variance.</p>
+          <ul><li>CI policy and exit codes</li><li>Release-to-release comparison</li><li>Immutable evidence</li><li>Variance owner + expiry</li><li>Consistency-debt trends</li><li>Comparator migrations</li></ul>
+        </div>
+        <div class="exit">EXIT · CI DISTINGUISHES PRODUCT DIVERGENCE, AUTOMATION INCOMPATIBILITY, AND MISSING EVIDENCE.</div>
+      </article>
+    </div>
+  </section>
+
+  <section id="release">
+    <div class="section-head">
+      <h2>Release-based graph model</h2>
+      <p>Commits provide a forecast. Release artifacts provide the evidence required to certify or change the graph.</p>
+    </div>
+    <div class="release-model">
+      <article class="panel">
+        <div class="eyebrow">Certified graph identity</div>
+        <pre>release: 2.4.0
+sourceCommit: a81fd92
+androidApkSha256: …
+iosAppSha256: …
+webDeployment: release-2-4-0.example.com
+environment: staging
+configurationSnapshot: cfg-104
+graphVersion: experience-graph/2.4.0</pre>
+      </article>
+      <article class="panel">
+        <div class="eyebrow">Decision sequence</div>
+        <div class="model-flow">
+          <div class="model-row"><b>Commits</b><span>Forecast affected concepts and journeys.</span></div>
+          <div class="model-row"><b>Artifacts</b><span>Build immutable Android, iOS, and Web release candidates.</span></div>
+          <div class="model-row"><b>Discovery</b><span>Probe impacted concepts plus critical unchanged mappings.</span></div>
+          <div class="model-row"><b>Certification</b><span>Update the graph only from observed build evidence.</span></div>
+          <div class="model-row"><b>Assurance</b><span>Execute impacted equivalence journeys and retain proof.</span></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="lint">
+    <div class="section-head">
+      <h2>Bandersnatch compatibility</h2>
+      <p>A semantic lint contract reduces discovery cost, improves accessibility, and gives developer AI agents an explicit, testable target.</p>
+    </div>
+    <div class="lint">
+      <article class="panel">
+        <div class="eyebrow">Experience contract</div>
+        <pre>concepts:
+  coupon_code:
+    type: text_input
+    accessibleName: Coupon code
+
+  apply_coupon:
+    type: action
+    accessibleName: Apply coupon
+
+  discounted_total:
+    type: observable
+    valueType: money
+    announcement: polite</pre>
+      </article>
+      <article class="panel">
+        <div class="eyebrow">First rule set</div>
+        <div class="rules">
+          <div class="rule"><b>BS001</b><span>Required semantic concept has no stable platform identifier.</span></div>
+          <div class="rule"><b>BS002</b><span>Interactive concept has no accessible human-readable name.</span></div>
+          <div class="rule"><b>BS005</b><span>Journey performs an action but exposes no observable outcome.</span></div>
+          <div class="rule"><b>BS006</b><span>State changes visually but is not announced programmatically.</span></div>
+          <div class="rule"><b>BS007</b><span>A required concept is missing from one or more platforms.</span></div>
+          <div class="rule"><b>BS010</b><span>Journey destination has no deterministic reset or entry strategy.</span></div>
+        </div>
+      </article>
+    </div>
+    <article class="panel" style="margin-top:18px">
+      <div class="eyebrow">Example readiness report</div>
+      <table class="readiness">
+        <thead><tr><th>Capability</th><th>Android</th><th>iOS</th><th>Web</th><th>Required action</th></tr></thead>
+        <tbody>
+          <tr><td>Stable concept identifiers</td><td class="ready">Ready</td><td class="assisted">Assisted</td><td class="ready">Ready</td><td>Add iOS identifier for discounted total</td></tr>
+          <tr><td>Accessible names</td><td class="ready">Ready</td><td class="ready">Ready</td><td class="ready">Ready</td><td>None</td></tr>
+          <tr><td>Observable discount result</td><td class="ready">Ready</td><td class="blocked">Blocked</td><td class="assisted">Assisted</td><td>Expose iOS value; add Web live region</td></tr>
+          <tr><td>Deterministic journey reset</td><td class="ready">Ready</td><td class="ready">Ready</td><td class="ready">Ready</td><td>None</td></tr>
+        </tbody>
+      </table>
+    </article>
+  </section>
+
+  <section id="moat">
+    <div class="section-head">
+      <h2>The defensible layer</h2>
+      <p>The long-term asset is not generated scripts. It is the living, evidence-backed relationship between product intent and every platform implementation.</p>
+    </div>
+    <div class="moat">
+      <article class="moat-quote">
+        <blockquote>Bandersnatch becomes the semantic index of the product experience.</blockquote>
+        <small>It knows what a journey means, where each concept lives, which release proved it, what changed, what must be re-tested, and whether every platform still delivers the same job.</small>
+      </article>
+      <div class="graph-list">
+        <div><b>Product intent</b><span>Requirements, natural language, and approved journey contracts.</span></div>
+        <div><b>Semantic concepts</b><span>Actions, destinations, values, states, announcements, and outcomes.</span></div>
+        <div><b>Platform implementations</b><span>Android, iOS, and Web source components and runtime controls.</span></div>
+        <div><b>Release provenance</b><span>Commits, artifact hashes, deployments, configuration, and graph versions.</span></div>
+        <div><b>Observed evidence</b><span>Videos, traces, hierarchies, screenshots, normalized values, and completion modes.</span></div>
+        <div><b>Assurance history</b><span>Equivalence decisions, accepted variance, regressions, and consistency debt.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Source · PRD.md phases 6–10</span>
+    <span>Future direction · does not broaden the current hackathon MVP</span>
+  </footer>
+</main>
+</body>
+</html>
