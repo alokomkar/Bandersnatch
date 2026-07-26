@@ -38,7 +38,7 @@ Scope cut: retain the text verdict if TTS is unavailable. Do not add translation
 
 ### A2 — Web accessibility evidence
 
-Status: **Acceptance-tested locally; PR review pending.**
+Status: **Acceptance-tested and merged.**
 
 Deliver:
 
@@ -55,6 +55,8 @@ Acceptance test:
 Scope cut: Chromium and the controlled fixture only.
 
 ### A3 — Android accessibility evidence
+
+Status: **Acceptance-tested locally; PR review pending.**
 
 Deliver:
 

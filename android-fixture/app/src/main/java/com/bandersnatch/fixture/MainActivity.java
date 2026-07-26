@@ -64,6 +64,7 @@ public final class MainActivity extends Activity {
         status = text("", 16);
         status.setId(R.id.coupon_status);
         status.setContentDescription("Coupon status");
+        status.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
         status.setTextColor(GREEN);
         cart.addView(status);
 
@@ -77,11 +78,17 @@ public final class MainActivity extends Activity {
 
     private void applyCoupon() {
         if ("SAVE10".equals(coupon.getText().toString().trim().toUpperCase())) {
+            String result = "Coupon SAVE10 applied. Discounted cart total ₹1,799";
             status.setText("Coupon SAVE10 applied");
+            status.setContentDescription(result);
             total.setText("Total: ₹1,799");
             total.setContentDescription("Discounted cart total ₹1,799");
+            status.announceForAccessibility(result);
         } else {
-            status.setText("Coupon not recognised");
+            String result = "Coupon not recognised";
+            status.setText(result);
+            status.setContentDescription(result);
+            status.announceForAccessibility(result);
         }
     }
 
