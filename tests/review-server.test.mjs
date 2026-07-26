@@ -2,11 +2,14 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { once } from "node:events";
 import { createReviewServer } from "../src/review-server.mjs";
+import { createPlatformRunners } from "../src/adapters/platforms.mjs";
 
 const validTranscript = "Open the cart, enter coupon SAVE10, apply the coupon, and verify that the discounted total is visible.";
 
 async function withServer(callback) {
-  const server = createReviewServer().listen(0, "127.0.0.1");
+  const webRunner = async (plan, { outputDir }) =>
+    createPlatformRunners({ outputDir, seedWebMismatch: true }).web(plan);
+  const server = createReviewServer({ webRunner }).listen(0, "127.0.0.1");
   await once(server, "listening");
   try {
     const { port } = server.address();

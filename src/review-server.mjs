@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 import { approvePlan, validatePlan } from "./contracts.mjs";
 import { comparePlatformResults } from "./comparator.mjs";
 import { createPlatformRunners } from "./adapters/platforms.mjs";
+import { runWebPlanWithPlaywright } from "./adapters/playwright-web.mjs";
 import { transcribeWithSarvam } from "./adapters/sarvam.mjs";
 import { loadLocalEnv } from "./env.mjs";
 import { reviewTranscript } from "./review.mjs";
@@ -42,7 +43,7 @@ async function serveFile(response, path, contentType) {
   response.end(body);
 }
 
-export function createReviewServer() {
+export function createReviewServer({ webRunner = runWebPlanWithPlaywright } = {}) {
   return createServer(async (request, response) => {
     try {
       if (request.method === "GET" && (request.url === "/" || request.url === "/review.html")) {
@@ -71,15 +72,18 @@ export function createReviewServer() {
       }
 
       if (request.method === "POST" && request.url === "/api/approve-run") {
-        const { review, seedWebMismatch = true } = await readJson(request);
+        const { review, webMode = "mismatch" } = await readJson(request);
         if (review?.status !== "ready_for_approval" || !review.plan) {
           return json(response, 409, { error: "Resolve transcript errors before approval." });
         }
         const plan = validatePlan(approvePlan(review.plan));
         const outputDir = resolve(ROOT, "artifacts", `review-${Date.now()}`);
         await mkdir(outputDir, { recursive: true });
-        const runners = createPlatformRunners({ outputDir, seedWebMismatch });
-        const [android, web] = await Promise.all([runners.android(plan), runners.web(plan)]);
+        const runners = createPlatformRunners({ outputDir, seedWebMismatch: false });
+        const [android, web] = await Promise.all([
+          runners.android(plan),
+          webRunner(plan, { outputDir, mode: webMode }),
+        ]);
         return json(response, 200, {
           plan,
           android,
