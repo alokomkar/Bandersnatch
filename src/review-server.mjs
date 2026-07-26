@@ -46,11 +46,12 @@ async function serveFile(response, path, contentType) {
 export function createReviewServer({ webRunner = runWebPlanWithPlaywright } = {}) {
   return createServer(async (request, response) => {
     try {
-      if (request.method === "GET" && (request.url === "/" || request.url === "/review.html")) {
+      const pathname = new URL(request.url, "http://localhost").pathname;
+      if (request.method === "GET" && (pathname === "/" || pathname === "/review.html")) {
         return await serveFile(response, "review.html", "text/html; charset=utf-8");
       }
 
-      if (request.method === "POST" && request.url === "/api/transcribe") {
+      if (request.method === "POST" && pathname === "/api/transcribe") {
         await loadLocalEnv(resolve(ROOT, ".env.local"));
         const extension = String(request.headers["x-audio-extension"] ?? ".webm").toLowerCase();
         if (!ALLOWED_EXTENSIONS.has(extension)) return json(response, 415, { error: "Use WAV, OGG, or WebM audio." });
@@ -66,12 +67,12 @@ export function createReviewServer({ webRunner = runWebPlanWithPlaywright } = {}
         }
       }
 
-      if (request.method === "POST" && request.url === "/api/review") {
+      if (request.method === "POST" && pathname === "/api/review") {
         const { transcription, correctedTranscript } = await readJson(request);
         return json(response, 200, reviewTranscript(transcription, correctedTranscript));
       }
 
-      if (request.method === "POST" && request.url === "/api/approve-run") {
+      if (request.method === "POST" && pathname === "/api/approve-run") {
         const { review, webMode = "mismatch" } = await readJson(request);
         if (review?.status !== "ready_for_approval" || !review.plan) {
           return json(response, 409, { error: "Resolve transcript errors before approval." });

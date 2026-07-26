@@ -14,6 +14,7 @@
     .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}.wide{grid-column:1/-1}
     textarea{width:100%;min-height:120px;border:1px solid var(--line);border-radius:12px;padding:13px;font:inherit;line-height:1.5;resize:vertical}
     button,.upload{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:10px;padding:11px 15px;background:var(--green);color:white;font-weight:750;cursor:pointer}
+    select{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:white;color:var(--ink);font:inherit}
     button.secondary,.upload{background:white;color:var(--ink);border:1px solid var(--line)}button:disabled{opacity:.4;cursor:not-allowed}
     .actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:13px}.upload input{display:none}.error{color:var(--red);font-weight:650}.success{color:var(--green);font-weight:700}
     ol{padding-left:22px}li{padding:7px 0;border-bottom:1px solid #edf0ed}.result{font-size:28px;font-weight:850;letter-spacing:-.03em}
@@ -45,6 +46,12 @@
     <section class="card wide">
       <h2>3 · Approve the platform-neutral plan</h2>
       <ol id="steps"><li>Waiting for a valid transcript.</li></ol>
+      <label for="web-mode" class="meta">Execution case</label>
+      <select id="web-mode">
+        <option value="success">Success · both platforms reach ₹1,799</option>
+        <option value="mismatch">Mismatch · Web remains ₹1,999</option>
+        <option value="missing">Missing evidence · Web total absent</option>
+      </select>
       <div class="actions"><button id="approve" disabled>Approve and run</button></div>
       <p class="meta">Run stays locked until all four intents and a coupon literal are valid.</p>
     </section>
@@ -60,6 +67,8 @@
 <script>
   const $=id=>document.getElementById(id);
   let transcription=null,reviewState=null,recorder=null,chunks=[];
+  const requestedMode=new URLSearchParams(location.search).get("mode");
+  if(["success","mismatch","missing"].includes(requestedMode))$("web-mode").value=requestedMode;
   const setStatus=value=>$("status").textContent=value;
   async function post(path,body){const response=await fetch(path,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(body)});const data=await response.json();if(!response.ok)throw new Error(data.error);return data}
   async function transcribe(file){
@@ -90,7 +99,7 @@
   };
   $("approve").onclick=async()=>{
     $("approve").disabled=true;setStatus("Running both platforms…");
-    try{const data=await post("/api/approve-run",{review:reviewState,webMode:"mismatch"});$("result-card").hidden=false;$("verdict").textContent=data.comparison.verdict.toUpperCase();$("reason").textContent=data.comparison.reason;$("divergence").textContent=`First divergence: ${data.comparison.firstDivergence||"none"}`;$("evidence").textContent=`Android evidence: ${data.android.evidenceMode} · Web evidence: ${data.web.evidenceMode} (${data.web.runner})`;setStatus("Run complete")}
+    try{const data=await post("/api/approve-run",{review:reviewState,webMode:$("web-mode").value});$("result-card").hidden=false;$("verdict").textContent=data.comparison.verdict.toUpperCase();$("reason").textContent=data.comparison.reason;$("divergence").textContent=`First divergence: ${data.comparison.firstDivergence||"none"}`;$("evidence").textContent=`Android evidence: ${data.android.evidenceMode} · Web evidence: ${data.web.evidenceMode} (${data.web.runner})`;setStatus("Run complete")}
     catch(error){$("errors").textContent=error.message;setStatus("Run blocked");$("approve").disabled=false}
   };
 </script>
