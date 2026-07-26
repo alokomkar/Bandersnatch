@@ -177,6 +177,7 @@ export async function runAndroidAccessibilityCheck({
     runner: "adb-uiautomator",
     evidenceMode: "live",
     serial,
+    observedOutcome: resultVisible ? "discounted_total_1799_visible" : null,
     interactionMode: "resource-id-derived coordinates",
     evidence,
     completion: classifyAccessibleCompletion({

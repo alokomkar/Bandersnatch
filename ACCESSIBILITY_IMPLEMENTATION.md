@@ -73,7 +73,7 @@ Scope cut: one connected Android device and the controlled fixture. Actual TalkB
 
 ### A4 — Joined accessible report
 
-Status: **Active. English platform evidence recordings are attached to the local presentation.**
+Status: **Acceptance-tested locally.** All three joined verdict paths render aligned Android/Web evidence, equivalent Hindi text and live Bulbul audio, keyboard-operable playback speed, and an explicit screen-reader evidence boundary.
 
 Deliver:
 
@@ -90,7 +90,7 @@ Scope cut: deterministic verdict templates only.
 
 ### A5 — Repetition and demo hardening
 
-Status: **In progress. The five English non-voice baseline recordings have been captured and media-validated.**
+Status: **Acceptance-tested locally; external demo checks remain.** Five English baseline recordings are media-validated, and three consecutive end-to-end runs each produced correct `consistent`, `inconsistent`, and `incomparable` reports with playable Hindi audio.
 
 Deliver:
 
@@ -105,6 +105,14 @@ Deliver:
 Acceptance test:
 
 > A blind or low-vision tester can speak, approve, run, and hear the bounded coupon verdict without sighted assistance.
+
+Local repeat evidence:
+
+- `2026-07-26T07-14-42-149Z`
+- `2026-07-26T07-15-13-908Z`
+- `2026-07-26T07-15-39-359Z`
+
+Each run produced Android node/event evidence once, three Web modes, three guarded joined verdicts, and three live Bulbul audio files. Public-link verification, a real screen-reader user acceptance pass, and two human-timed rehearsals must remain unchecked until performed.
 
 Recording contract:
 
