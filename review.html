@@ -53,6 +53,7 @@
       <div class="result" id="verdict"></div>
       <p id="reason"></p>
       <p class="meta" id="divergence"></p>
+      <p class="meta" id="evidence"></p>
     </section>
   </div>
 </main>
@@ -89,7 +90,7 @@
   };
   $("approve").onclick=async()=>{
     $("approve").disabled=true;setStatus("Running both platforms…");
-    try{const data=await post("/api/approve-run",{review:reviewState});$("result-card").hidden=false;$("verdict").textContent=data.comparison.verdict.toUpperCase();$("reason").textContent=data.comparison.reason;$("divergence").textContent=`First divergence: ${data.comparison.firstDivergence||"none"}`;setStatus("Run complete")}
+    try{const data=await post("/api/approve-run",{review:reviewState,webMode:"mismatch"});$("result-card").hidden=false;$("verdict").textContent=data.comparison.verdict.toUpperCase();$("reason").textContent=data.comparison.reason;$("divergence").textContent=`First divergence: ${data.comparison.firstDivergence||"none"}`;$("evidence").textContent=`Android evidence: ${data.android.evidenceMode} · Web evidence: ${data.web.evidenceMode} (${data.web.runner})`;setStatus("Run complete")}
     catch(error){$("errors").textContent=error.message;setStatus("Run blocked");$("approve").disabled=false}
   };
 </script>
