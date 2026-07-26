@@ -71,6 +71,12 @@
     .live-label{display:inline-flex;align-items:center;gap:6px;margin-left:8px;padding:4px 7px;border-radius:999px;background:#eceae3;color:var(--muted);font:600 8px DM Mono;text-transform:uppercase;letter-spacing:.05em}
     .platform-evidence{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px}
     .platform-evidence span{padding:8px 7px;border:1px solid var(--line);border-radius:8px;background:#faf8f3;font:600 8px/1.35 DM Mono;text-transform:uppercase;color:var(--muted);text-align:center}
+    .execution-video{position:relative;display:grid;place-items:center;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:14px;background:#101412}
+    .execution-video video{display:block;width:100%;height:100%;object-fit:contain;background:#101412}
+    .execution-video.android video{object-fit:contain}
+    .video-state{position:absolute;left:10px;bottom:10px;padding:6px 9px;border-radius:999px;background:rgba(16,20,18,.84);color:white;font:700 8px DM Mono;text-transform:uppercase;letter-spacing:.06em;backdrop-filter:blur(8px)}
+    .result-pending{margin-top:20px;padding:24px;border:1px dashed var(--line);border-radius:18px;background:#efede7;text-align:center;color:var(--muted);font-size:12px;line-height:1.6}
+    [hidden]{display:none!important}
     .screen{background:#e9e7e0;border-radius:14px;padding:13px;display:grid;grid-template-columns:90px 1fr;gap:14px;min-height:170px}
     .device{background:#fff;border:4px solid #222;border-radius:15px;padding:9px 7px;box-shadow:0 5px 12px #0002}
     .browser{background:white;border-radius:8px;overflow:hidden;box-shadow:0 5px 12px #0002}.browserbar{height:18px;background:#e8e8e8}.browserbody{padding:12px}
@@ -224,24 +230,25 @@
           <div class="runner-grid">
             <div class="runner">
               <div class="runner-title"><strong>Android · Maestro MCP <span class="live-label">Device evidence</span></strong><span class="dot platform-status">● Connected</span></div>
-              <div class="screen">
-                <div class="device"><div class="mockline short"></div><div class="mockline"></div><div class="mockline"></div><div class="mockbtn"></div><div class="mocktotal">₹1,799</div></div>
-                <div class="steps-mini"><div class="mini">Open cart <b>✓</b></div><div class="mini">Enter SAVE10 <b>✓</b></div><div class="mini">Apply coupon <b>✓</b></div><div class="mini">Discount visible <b>✓</b></div></div>
+              <div class="execution-video android">
+                <video id="android-execution" muted playsinline preload="metadata" src="artifacts/demo-recordings/android-success.mp4" aria-label="Recorded Android coupon success execution"></video>
+                <span class="video-state" id="android-video-state">Ready · recorded device run</span>
               </div>
               <div class="platform-evidence"><span>4/4 steps</span><span>₹1,799 total</span><span>Screenshot + log</span></div>
             </div>
             <div class="runner">
               <div class="runner-title"><strong>Web · Playwright MCP <span class="live-label">Browser evidence</span></strong><span class="dot platform-status">● Connected</span></div>
-              <div class="screen">
-                <div class="browser"><div class="browserbar"></div><div class="browserbody"><div class="mockline short"></div><div class="mockline"></div><div class="mockline"></div><div class="mockbtn"></div><div class="mocktotal" style="color:var(--red)">₹1,999</div></div></div>
-                <div class="steps-mini"><div class="mini">Open cart <b>✓</b></div><div class="mini">Enter SAVE10 <b>✓</b></div><div class="mini">Apply coupon <b>✓</b></div><div class="mini">Discount visible <b style="color:var(--red)">✕</b></div></div>
+              <div class="execution-video">
+                <video id="web-execution" muted playsinline preload="metadata" src="artifacts/demo-recordings/web-mismatch.webm" aria-label="Recorded Web coupon mismatch execution"></video>
+                <span class="video-state" id="web-video-state">Ready · recorded browser run</span>
               </div>
               <div class="platform-evidence"><span>3/4 steps</span><span style="color:var(--red)">₹1,999 total</span><span>Screenshot + trace</span></div>
             </div>
           </div>
         </article>
       </div>
-      <article class="card report" id="report">
+      <div class="result-pending" id="result-pending"><b>Result locked until execution completes</b><br>Run the approved plan to watch Android and Web evidence side by side. Bandersnatch reveals the verdict only after both platform runs finish.</div>
+      <article class="card report" id="report" hidden>
         <div class="verdict">
           <div class="verdict-left"><span class="verdict-icon">!</span><div><h3>Flow is inconsistent</h3><p>Android completed the intended outcome; Web did not display the discounted total.</p></div></div>
           <div class="score">75%</div>
@@ -661,21 +668,51 @@
     e.currentTarget.style.background = '#181d1b';
   });
   document.getElementById('run').addEventListener('click', e => {
+    const runButton = e.currentTarget;
     const state = document.getElementById('runstate');
     const syncState = document.getElementById('syncstate');
     const statuses = document.querySelectorAll('.platform-status');
-    e.currentTarget.disabled = true;
-    e.currentTarget.textContent = 'Running both platforms…';
+    const androidVideo = document.getElementById('android-execution');
+    const webVideo = document.getElementById('web-execution');
+    const androidVideoState = document.getElementById('android-video-state');
+    const webVideoState = document.getElementById('web-video-state');
+    const report = document.getElementById('report');
+    const resultPending = document.getElementById('result-pending');
+    runButton.disabled = true;
+    runButton.textContent = 'Watching both executions…';
     state.textContent = '03 · Executing';
     syncState.textContent = 'Executing in parallel';
     statuses.forEach(s => s.textContent = '● Running');
-    setTimeout(() => {
-      e.currentTarget.textContent = '✓ Run complete';
+    report.hidden = true;
+    resultPending.hidden = false;
+    androidVideo.currentTime = 0;
+    webVideo.currentTime = 0;
+    androidVideoState.textContent = 'Playing · Android device';
+    webVideoState.textContent = 'Playing · desktop Web';
+    const finished = video => new Promise(resolve => {
+      if (video.ended) return resolve();
+      video.addEventListener('ended', resolve, {once:true});
+    });
+    Promise.all([
+      androidVideo.play().then(() => finished(androidVideo)),
+      webVideo.play().then(() => finished(webVideo))
+    ]).then(() => {
+      androidVideoState.textContent = 'Complete · outcome captured';
+      webVideoState.textContent = 'Complete · divergence captured';
+      runButton.disabled = false;
+      runButton.textContent = 'Replay Android + Web evidence';
       state.textContent = '03 · Complete';
       syncState.textContent = 'Compared · 1 divergence';
       statuses.forEach(s => s.textContent = '● Evidence captured');
-      document.getElementById('report').scrollIntoView({behavior:'smooth', block:'start'});
-    }, 1200);
+      resultPending.hidden = true;
+      report.hidden = false;
+      report.scrollIntoView({behavior:'smooth', block:'start'});
+    }).catch(() => {
+      runButton.disabled = false;
+      runButton.textContent = 'Replay Android + Web evidence';
+      state.textContent = '03 · Playback blocked';
+      syncState.textContent = 'Press run to retry';
+    });
   });
 </script>
 </body>
