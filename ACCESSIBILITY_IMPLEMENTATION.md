@@ -2,6 +2,8 @@
 
 ## Locked pilot
 
+A multilingual accessibility or exploratory tester—not a customer-support caller—is the product user. Voice is valuable because it enables hands-busy test authoring and independent use by blind or low-vision testers.
+
 A blind or low-vision Hindi-speaking tester speaks the `SAVE10` coupon journey, reviews and approves it without sighted assistance, runs it on Android and Web, receives accessibility-tree evidence, and hears a deterministic Hindi verdict through Sarvam Bulbul v3.
 
 Voice Experience remains the only scored Sarvam parameter. Saaras v3 is the input edge and Bulbul v3 is the output edge; using both does not create a second scored parameter.

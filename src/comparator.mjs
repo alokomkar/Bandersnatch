@@ -31,7 +31,7 @@ export function comparePlatformResults(android, web) {
     firstDivergence: firstDivergence?.intent ?? null,
     reason: firstDivergence
       ? `The first measured divergence occurred at ${firstDivergence.intent}.`
-      : "Both platforms completed the same measured customer outcome.",
+      : "Both platforms completed the same measured intended outcome.",
     rows,
   };
 }

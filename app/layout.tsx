@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Bandersnatch — Voice-authored cross-platform testing",
+  title: "Bandersnatch — Multilingual accessibility and exploratory QA",
   description:
-    "Turn a local-language journey into a reviewed Android and Web consistency test.",
+    "Speak a test journey in an Indian language, watch Android and Web execute it, and hear an evidence-backed consistency verdict.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
