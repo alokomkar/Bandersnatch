@@ -16,7 +16,7 @@
   <section id="cart" data-testid="cart" hidden>
     <h1>Your cart</h1><p>Everyday backpack</p>
     <div class="row"><label>Coupon <input data-testid="coupon-input" aria-label="Coupon code"></label><button data-testid="apply-coupon">Apply</button></div>
-    <p class="notice" data-testid="coupon-status" aria-live="polite"></p>
+    <p class="notice" data-testid="coupon-status" role="status" aria-live="polite" aria-atomic="true"></p>
     <div class="totals" data-testid="total">Total: <strong>₹1,999</strong></div>
   </section>
 </main>

@@ -20,6 +20,8 @@ An accessibility event alone is not proof that TalkBack or another screen reader
 
 ### A1 — Contract and spoken verdict
 
+Status: **Acceptance-tested.**
+
 Deliver:
 
 - locked accessibility intents: `find_control`, `assert_accessible_name`, `assert_focus_logical`, and `assert_announcement`;
@@ -35,6 +37,8 @@ Acceptance test:
 Scope cut: retain the text verdict if TTS is unavailable. Do not add translation or generated explanations.
 
 ### A2 — Web accessibility evidence
+
+Status: **Acceptance-tested locally; PR review pending.**
 
 Deliver:
 
