@@ -38,7 +38,7 @@ Scope cut: retain the text verdict if TTS is unavailable. Do not add translation
 
 ### A2 — Web accessibility evidence
 
-Status: **Acceptance-tested locally; PR review pending.**
+Status: **Acceptance-tested and merged.**
 
 Deliver:
 
@@ -55,6 +55,8 @@ Acceptance test:
 Scope cut: Chromium and the controlled fixture only.
 
 ### A3 — Android accessibility evidence
+
+Status: **Acceptance-tested locally; PR review pending.**
 
 Deliver:
 
@@ -88,6 +90,8 @@ Scope cut: deterministic verdict templates only.
 
 Deliver:
 
+- record the English, non-voice baseline first for `consistent`, `inconsistent`, and `incomparable`;
+- repeat those fixed cases with voice authoring only after the baseline footage is accepted;
 - success, deliberate mismatch, and missing-evidence cases;
 - deterministic reset and fallback recording;
 - three repeated runs;
@@ -97,6 +101,10 @@ Deliver:
 Acceptance test:
 
 > A blind or low-vision tester can speak, approve, run, and hear the bounded coupon verdict without sighted assistance.
+
+Recording contract:
+
+> `DEMO_RECORDING_PLAN.md` is the source of truth for case order, expected evidence, filenames, and claims. Video capture itself is handled in the separate recording task.
 
 ## Sarvam access
 
