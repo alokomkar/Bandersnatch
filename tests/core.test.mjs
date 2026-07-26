@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { approvePlan, compileTranscript, validatePlan } from "../src/contracts.mjs";
 import { comparePlatformResults } from "../src/comparator.mjs";
+import { reviewTranscript } from "../src/review.mjs";
+import { mockSarvamTranscript } from "../src/adapters/sarvam.mjs";
 
 const transcript = "Open the cart, enter coupon SAVE10, apply the coupon, and verify that the discounted total is visible.";
 
@@ -24,6 +26,27 @@ test("blocks execution before approval", () => {
   const plan = compileTranscript(transcript).plan;
   assert.throws(() => validatePlan(plan), /approved/i);
   assert.doesNotThrow(() => validatePlan(approvePlan(plan)));
+});
+
+test("preserves a failed transcript and records an explicit correction", () => {
+  const transcription = { transcript: "Please check the cart and discount." };
+  const blocked = reviewTranscript(transcription);
+  assert.equal(blocked.status, "needs_correction");
+  assert.equal(blocked.originalTranscript, transcription.transcript);
+  assert.equal(blocked.plan, null);
+
+  const corrected = reviewTranscript(transcription, transcript);
+  assert.equal(corrected.status, "ready_for_approval");
+  assert.equal(corrected.correctionApplied, true);
+  assert.equal(corrected.originalTranscript, transcription.transcript);
+  assert.equal(corrected.reviewedTranscript, transcript);
+  assert.equal(corrected.plan.steps[1].value, "SAVE10");
+});
+
+test("retains detected-language evidence from Sarvam", () => {
+  const result = mockSarvamTranscript();
+  assert.equal(result.languageCode, "hi-IN");
+  assert.equal(result.languageProbability, 0.99);
 });
 
 test("returns consistent, inconsistent, and incomparable verdicts", () => {
