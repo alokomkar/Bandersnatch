@@ -437,6 +437,39 @@
         <a href="artifacts/accessibility-demo/2026-07-26T07-15-39-359Z/mismatch/report.html" target="_blank">Inconsistent + Hindi audio</a> ·
         <a href="artifacts/accessibility-demo/2026-07-26T07-15-39-359Z/missing/report.html" target="_blank">Incomparable + Hindi audio</a>
       </div>
+      <div class="evidence-head" style="margin-top:36px">
+        <div>
+          <div class="eyebrow">Sarvam voice evidence · Hindi input and output</div>
+          <h1>Recorded voice proofs</h1>
+        </div>
+        <p class="evidence-summary">These recordings show live Hindi speech transcription, guarded transcript review, and the Hindi Bulbul verdict. Android evidence shown in the browser review recording is explicitly labelled mock.</p>
+      </div>
+      <div class="video-grid">
+        <article class="video-card">
+          <video controls preload="metadata" src="artifacts/demo-recordings/sarvam-voice-success.mov" aria-label="Sarvam Hindi voice success recording"></video>
+          <div class="video-copy">
+            <h2>Hindi voice · successful plan</h2>
+            <p>Auto-detected <b>hi-IN</b>, preserved <b>SAVE10</b>, compiled four intents, and returned a consistent browser-review result.</p>
+            <div class="video-meta"><span>32.6 seconds</span><span>Saaras v3</span><span>Voice success</span></div>
+          </div>
+        </article>
+        <article class="video-card">
+          <video controls preload="metadata" src="artifacts/demo-recordings/sarvam-voice-failure.mov" aria-label="Sarvam literal correction and mismatch recording"></video>
+          <div class="video-copy">
+            <h2>Hindi voice · guarded correction</h2>
+            <p>Sarvam initially returned “save ten”; Bandersnatch blocked approval until the literal became <b>SAVE10</b>, then exposed the seeded inconsistency.</p>
+            <div class="video-meta"><span>77.4 seconds</span><span>Human review</span><span>Failure recovery</span></div>
+          </div>
+        </article>
+        <article class="video-card">
+          <video controls preload="metadata" src="artifacts/demo-recordings/sarvam-accessibility-verdict.mov" aria-label="Hindi Bulbul spoken accessibility verdict recording"></video>
+          <div class="video-copy">
+            <h2>Hindi spoken accessibility verdict</h2>
+            <p>The joined Android/Web report presents equivalent Hindi text and user-controlled Bulbul audio with adjustable playback speed.</p>
+            <div class="video-meta"><span>9.5 seconds</span><span>Bulbul v3</span><span>Accessible output</span></div>
+          </div>
+        </article>
+      </div>
     </section>
 
     <section class="view" id="presentation">
