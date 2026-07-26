@@ -91,6 +91,13 @@ export async function runWebAccessibilityCheck({
     const postActionFocus = await activeElementName(page);
     const announcements = await page.evaluate(() => window.__bandersnatchAnnouncements ?? []);
     const announcement = announcements.at(-1)?.text ?? null;
+    const total = page.getByTestId("total");
+    const totalText = await total.count() ? await total.innerText() : null;
+    const observedOutcome = totalText?.includes("₹1,799")
+      ? "discounted_total_1799_visible"
+      : totalText?.includes("₹1,999")
+        ? "original_total_1999_visible"
+        : null;
     await page.screenshot({ path: screenshot, fullPage: true });
 
     const namesPassed = controls.openCart.role === "button"
@@ -143,6 +150,7 @@ export async function runWebAccessibilityCheck({
       runner: "playwright",
       evidenceMode: "live",
       fixtureMode: mode,
+      observedOutcome,
       interactionMode: "keyboard",
       controls,
       announcements,

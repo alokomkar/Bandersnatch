@@ -12,9 +12,10 @@
     "serve:review": "node src/review-server.mjs",
     "m1:demo": "node src/run-golden-path.mjs --mock",
     "m1:live": "node src/run-golden-path.mjs --live",
-    "test": "node --test tests/core.test.mjs tests/review-server.test.mjs tests/accessibility.test.mjs",
+    "test": "node --test tests/core.test.mjs tests/review-server.test.mjs tests/accessibility.test.mjs tests/joined-accessibility.test.mjs",
     "test:web": "node --test tests/playwright-web.test.mjs tests/playwright-accessibility.test.mjs",
-    "test:android-accessibility": "node --test tests/android-accessibility.test.mjs"
+    "test:android-accessibility": "node --test tests/android-accessibility.test.mjs",
+    "a4:demo": "node src/run-accessibility-demo.mjs"
   },
   "devDependencies": {
     "playwright": "1.61.1"
