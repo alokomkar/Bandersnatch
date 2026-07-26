@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { chromium } from "playwright";
 
-const fixtureUrl = pathToFileURL(resolve("fixtures", "checkout.html")).href;
+const localFixtureUrl = pathToFileURL(resolve("fixtures", "checkout.html")).href;
 
 const observedOutcomes = {
   open_cart: "cart_visible",
@@ -15,7 +15,7 @@ export async function runWebPlanWithPlaywright(plan, {
   outputDir,
   mode = "success",
   headless = true,
-  url = fixtureUrl,
+  url = process.env.WEB_FIXTURE_URL ?? localFixtureUrl,
 } = {}) {
   await mkdir(outputDir, { recursive: true });
   const browser = await chromium.launch({ headless });
