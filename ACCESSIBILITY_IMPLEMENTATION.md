@@ -73,6 +73,8 @@ Scope cut: one connected Android device and the controlled fixture. Actual TalkB
 
 ### A4 — Joined accessible report
 
+Status: **Active. English platform evidence recordings are attached to the local presentation.**
+
 Deliver:
 
 - Android/Web evidence aligned by intent;
@@ -87,6 +89,8 @@ Acceptance test:
 Scope cut: deterministic verdict templates only.
 
 ### A5 — Repetition and demo hardening
+
+Status: **In progress. The five English non-voice baseline recordings have been captured and media-validated.**
 
 Deliver:
 

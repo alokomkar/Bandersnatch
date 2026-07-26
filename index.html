@@ -90,8 +90,41 @@
     .deck{max-width:1280px;margin:0 auto}
     .deck-head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:22px}
     .deck-head h1{font-size:clamp(32px,4vw,56px);margin:10px 0 0}
-    .deck-stage{position:relative;background:#101412;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);aspect-ratio:16/9;display:grid;place-items:center}
-    .deck-slide{width:100%;height:100%;object-fit:contain;display:block}
+    .deck-stage{position:relative;background:#fff;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);aspect-ratio:16/9}
+    .deck-slide{position:absolute;inset:0;display:none;padding:3.2% 3.3%;background:#fff;color:#090b0a;overflow:hidden}
+    .deck-slide.active{display:flex;flex-direction:column}
+    .deck-slide h2{font-size:clamp(20px,2.7vw,39px);line-height:1.08;letter-spacing:-.045em;margin:0;max-width:94%}
+    .deck-slide p{font-size:clamp(10px,1.2vw,18px);line-height:1.45}
+    .deck-kicker{font:800 clamp(8px,.8vw,12px) DM Mono;text-transform:uppercase;letter-spacing:.03em}
+    .deck-page{position:absolute;right:3.3%;bottom:2.7%;font:500 clamp(8px,.75vw,11px) DM Mono}
+    .deck-title-slide{justify-content:center!important}.deck-title-slide .deck-kicker{position:absolute;top:6%;left:3.3%}
+    .deck-title-slide h2{font-size:clamp(36px,5.4vw,78px);max-width:820px;margin-bottom:4%}
+    .deck-title-slide p{max-width:570px;margin:0}
+    .deck-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:4%;margin-top:auto;margin-bottom:7%;position:relative}
+    .deck-cols:before{content:"";position:absolute;left:0;right:0;top:-22%;height:1px;background:#111}
+    .deck-col{position:relative}.deck-col:before{content:"";position:absolute;top:-23.5%;left:0;width:10px;height:10px;border-radius:50%;background:#111}
+    .deck-col small{display:block;font:800 clamp(8px,.8vw,12px) DM Mono;text-transform:uppercase;margin-bottom:16%}
+    .deck-col strong{display:block;font-size:clamp(13px,1.5vw,22px);line-height:1.2;margin-bottom:7px}
+    .deck-col span{display:block;font-size:clamp(9px,1vw,14px);line-height:1.45}
+    .deck-proof{display:grid;grid-template-columns:.9fr 1.1fr;gap:6%;align-items:center;flex:1}
+    .deck-proof-copy strong{display:block;font-size:clamp(15px,1.7vw,24px);margin-bottom:8px}
+    .deck-ui{border:1px solid #d9d9d9;border-radius:12px;padding:3%;background:#f7f6f1;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .deck-ui-panel{border:1px solid #ddd;background:white;border-radius:8px;padding:10px;min-height:82px}
+    .deck-ui-panel b{display:block;font-size:clamp(8px,.8vw,12px);margin-bottom:9px}.deck-ui-line{height:7px;background:#dfe3df;border-radius:4px;margin:6px 0}.deck-ui-line.short{width:60%}.deck-ui-pass{color:var(--green);font-weight:800}.deck-ui-fail{color:var(--red);font-weight:800}
+    .deck-two{display:grid;grid-template-columns:1fr 1fr;gap:3%;margin-top:auto;margin-bottom:5%}
+    .deck-panel{background:#f2f2f2;border-radius:8px;padding:5%;min-height:145px}
+    .deck-panel strong{display:block;font-size:clamp(13px,1.45vw,21px);margin-bottom:9px}.deck-panel span{display:block;font-size:clamp(9px,1vw,14px);line-height:1.5}
+    .deck-context{margin:3% 0 0;max-width:92%;font-size:clamp(9px,1vw,14px)!important}
+    .deck-end{justify-content:center!important}.deck-end h2{font-size:clamp(38px,5.2vw,74px);line-height:1.07;max-width:620px}.deck-end p{margin-top:5%;font:500 clamp(10px,1vw,14px) DM Mono}
+    .evidence-head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:24px}
+    .evidence-head h1{margin:8px 0 0}.evidence-summary{max-width:520px;color:var(--muted);font-size:13px;line-height:1.6}
+    .video-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+    .video-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}
+    .video-card video{display:block;width:100%;aspect-ratio:16/9;background:#101412;object-fit:contain}
+    .video-card.android video{aspect-ratio:9/16;max-height:520px}
+    .video-copy{padding:18px}.video-copy h2{font-size:17px;margin:0 0 7px}.video-copy p{font-size:12px;line-height:1.55;color:var(--muted);margin:0}
+    .video-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.video-meta span{font:600 9px DM Mono;text-transform:uppercase;padding:6px 8px;border:1px solid var(--line);border-radius:999px}
+    .video-boundary{margin-top:20px;padding:16px 18px;border-left:4px solid var(--green);background:var(--green2);font-size:12px;line-height:1.6}
     .deck-tradeoff{display:none;position:absolute;left:3.3%;right:3.3%;bottom:3.8%;padding:14px 18px;background:#181d1b;color:#fff;border-left:5px solid var(--lime);box-shadow:0 10px 28px rgba(0,0,0,.22);text-align:left}
     .deck-tradeoff.visible{display:block}
     .deck-tradeoff b{display:block;color:var(--lime);font:700 11px DM Mono;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
@@ -128,6 +161,7 @@
       <button class="tab active" data-view="product">Product demo</button>
       <button class="tab" data-view="prd">Visual PRD</button>
       <button class="tab" data-view="accessibility">Accessibility</button>
+      <button class="tab" data-view="evidence">Evidence videos</button>
       <button class="tab" data-view="presentation">Presentation</button>
     </nav>
     <div class="status"><i></i> Interactive concept · local</div>
@@ -346,6 +380,59 @@
       <div class="footnote">PHASE 5 EXIT · A TESTER CAN SPEAK, APPROVE, RUN, AND HEAR THE VERDICT WITHOUT SIGHTED ASSISTANCE</div>
     </section>
 
+    <section class="view" id="evidence">
+      <div class="evidence-head">
+        <div>
+          <div class="eyebrow">English baseline · no voice input</div>
+          <h1>Recorded platform evidence</h1>
+        </div>
+        <p class="evidence-summary">The fixed English journey is compiled once and executed against controlled Android and Web fixtures. These raw recordings establish the baseline before voice authoring is introduced.</p>
+      </div>
+      <div class="video-grid">
+        <article class="video-card android">
+          <video controls preload="metadata" src="artifacts/demo-recordings/android-success.mp4" aria-label="Android coupon success recording"></video>
+          <div class="video-copy">
+            <h2>Android · success</h2>
+            <p><b>SAVE10</b> is accepted and the discounted total reaches ₹1,799.</p>
+            <div class="video-meta"><span>15.9 seconds</span><span>Maestro</span><span>Success</span></div>
+          </div>
+        </article>
+        <article class="video-card android">
+          <video controls preload="metadata" src="artifacts/demo-recordings/android-failure.mp4" aria-label="Android invalid coupon recording"></video>
+          <div class="video-copy">
+            <h2>Android · invalid coupon</h2>
+            <p><b>FAIL10</b> is rejected and the original total remains ₹1,999.</p>
+            <div class="video-meta"><span>15.1 seconds</span><span>Maestro</span><span>Failure</span></div>
+          </div>
+        </article>
+        <article class="video-card">
+          <video controls preload="metadata" src="artifacts/demo-recordings/web-success.webm" aria-label="Web coupon success recording"></video>
+          <div class="video-copy">
+            <h2>Web · success</h2>
+            <p><b>SAVE10</b> is accepted and the discounted total reaches ₹1,799.</p>
+            <div class="video-meta"><span>1.4 seconds</span><span>Playwright</span><span>Success</span></div>
+          </div>
+        </article>
+        <article class="video-card">
+          <video controls preload="metadata" src="artifacts/demo-recordings/web-mismatch.webm" aria-label="Web seeded mismatch recording"></video>
+          <div class="video-copy">
+            <h2>Web · deliberate mismatch</h2>
+            <p>The coupon is accepted but the total remains ₹1,999, creating an evidence-backed inconsistency.</p>
+            <div class="video-meta"><span>1.2 seconds</span><span>Playwright</span><span>Inconsistent</span></div>
+          </div>
+        </article>
+        <article class="video-card">
+          <video controls preload="metadata" src="artifacts/demo-recordings/web-missing.webm" aria-label="Web missing evidence recording"></video>
+          <div class="video-copy">
+            <h2>Web · missing evidence</h2>
+            <p>The required total is absent, so Bandersnatch must return <b>incomparable</b> rather than guessing.</p>
+            <div class="video-meta"><span>1.2 seconds</span><span>Playwright</span><span>Incomparable</span></div>
+          </div>
+        </article>
+      </div>
+      <div class="video-boundary"><b>Evidence boundary:</b> these are English, non-voice platform recordings. Voice authoring, the joined accessible report, and Hindi Bulbul playback are separate A4/A5 proofs.</div>
+    </section>
+
     <section class="view" id="presentation">
       <div class="deck">
         <div class="deck-head">
@@ -354,8 +441,103 @@
             <h1>Bandersnatch presentation</h1>
           </div>
         </div>
-        <div class="deck-stage">
-          <img class="deck-slide" id="deck-slide" src="slides/slide-1.png" alt="Bandersnatch presentation slide 1 of 10">
+        <div class="deck-stage" id="deck-stage" aria-live="polite">
+          <article class="deck-slide deck-title-slide active" data-slide="1" aria-label="Slide 1 of 10">
+            <div class="deck-kicker">Sarvam Epoch Buildathon</div>
+            <h2>Say the journey once.<br>Prove it everywhere.</h2>
+            <p>Bandersnatch · Voice-authored consistency testing<br>for Android + Web</p>
+          </article>
+
+          <article class="deck-slide" data-slide="2" aria-label="Slide 2 of 10">
+            <h2>Cross-platform drift hides between two “passing” test suites</h2>
+            <div class="deck-cols">
+              <div class="deck-col"><small>01</small><strong>Duplicate authoring</strong><span>Teams describe the same journey twice—once for native, once for Web.</span></div>
+              <div class="deck-col"><small>02</small><strong>Fragmented evidence</strong><span>Results live in separate tools, screenshots, traces, and mental models.</span></div>
+              <div class="deck-col"><small>03</small><strong>Semantic mismatch</strong><span>A customer finds the outcome difference after release.</span></div>
+            </div>
+            <span class="deck-page">2</span>
+          </article>
+
+          <article class="deck-slide" data-slide="3" aria-label="Slide 3 of 10">
+            <h2>Bandersnatch turns speech into one governed product contract</h2>
+            <div class="deck-cols">
+              <div class="deck-col"><small>Speak</small><strong>Indian-language journey</strong><span>Saaras v3 translates the instruction. The engineer reviews literals and intent.</span></div>
+              <div class="deck-col"><small>Execute</small><strong>Two platform adapters</strong><span>Maestro drives Android. Playwright drives Web. Both resolve the same four intents.</span></div>
+              <div class="deck-col"><small>Decide</small><strong>One guarded verdict</strong><span>Normalized evidence yields consistent, inconsistent, or incomparable.</span></div>
+            </div>
+            <span class="deck-page">3</span>
+          </article>
+
+          <article class="deck-slide" data-slide="4" aria-label="Slide 4 of 10">
+            <h2>First divergence, proven</h2>
+            <div class="deck-proof">
+              <div class="deck-proof-copy"><strong>Golden journey</strong><p>Speak a Hindi or code-mixed coupon journey. Approve four intents. Watch Android and Web run. Reveal that Web accepted SAVE10 but kept the original total.</p></div>
+              <div class="deck-ui" aria-label="Illustrated Android and Web evidence report">
+                <div class="deck-ui-panel"><b>Voice input</b><div class="deck-ui-line short"></div><div class="deck-ui-line"></div><span class="deck-ui-pass">✓ Plan approved</span></div>
+                <div class="deck-ui-panel"><b>Intent plan</b><div class="deck-ui-line"></div><div class="deck-ui-line"></div><div class="deck-ui-line short"></div></div>
+                <div class="deck-ui-panel"><b>Android · ₹1,799</b><span class="deck-ui-pass">4 / 4 passed</span></div>
+                <div class="deck-ui-panel"><b>Web · ₹1,999</b><span class="deck-ui-fail">First divergence</span></div>
+              </div>
+            </div>
+            <span class="deck-page">4</span>
+          </article>
+
+          <article class="deck-slide" data-slide="5" aria-label="Slide 5 of 10">
+            <h2>A blind tester can author—and hear—the accessibility verdict</h2>
+            <div class="deck-cols">
+              <div class="deck-col"><small>Author</small><strong>Hindi screen-reader journey</strong><span>Saaras v3 translates the request while preserving SAVE10.</span></div>
+              <div class="deck-col"><small>Compare</small><strong>Accessibility evidence</strong><span>Android and Web expose names, focus, reachability, and announcements.</span></div>
+              <div class="deck-col"><small>Hear</small><strong>Spoken Hindi verdict</strong><span>Bulbul v3 explains the first barrier without requiring sighted assistance.</span></div>
+            </div>
+            <span class="deck-page">5</span>
+          </article>
+
+          <article class="deck-slide" data-slide="6" aria-label="Slide 6 of 10">
+            <h2>Yes: trustworthy execution needs a one-time adapter mapping</h2>
+            <p class="deck-context"><b>What the walkthrough does</b><br>Bandersnatch connects each platform-neutral intent to stable controls in the actual product. Mapping can be manual, imported, or discovered—but it cannot be guessed silently.</p>
+            <div class="deck-two">
+              <div class="deck-panel"><strong>Android</strong><span>Map intents to resource IDs or accessibility labels.<br><br>Inspect hierarchy · Run preflight · Version mappings</span></div>
+              <div class="deck-panel"><strong>Web</strong><span>Map intents to test IDs, roles, labels, or accessible names.<br><br>Inspect tree · Reject ambiguity · Revalidate</span></div>
+            </div>
+            <span class="deck-page">6</span>
+          </article>
+
+          <article class="deck-slide" data-slide="7" aria-label="Slide 7 of 10">
+            <h2>The payoff is shared intent; the cost is governed setup</h2>
+            <p class="deck-context"><b>Honest product tradeoff</b><br>Bandersnatch reduces duplicated authoring and manual comparison, but it does not eliminate platform knowledge. Teams invest once in stable mappings, fixtures, and outcome rules.</p>
+            <div class="deck-two">
+              <div class="deck-panel"><strong>What teams gain</strong><span>One journey contract<br>Synchronized evidence<br>Outcome-level drift detection</span></div>
+              <div class="deck-panel"><strong>What teams accept</strong><span>Initial adapter mapping<br>Fixture discipline<br>Maintenance when UI contracts change</span></div>
+            </div>
+            <span class="deck-page">7</span>
+          </article>
+
+          <article class="deck-slide" data-slide="8" aria-label="Slide 8 of 10">
+            <h2>The moat compounds in the governed consistency graph</h2>
+            <div class="deck-cols">
+              <div class="deck-col"><small>Intent contracts</small><strong>A shared vocabulary</strong><span>Versioned customer intent, independent of UI implementation.</span></div>
+              <div class="deck-col"><small>Adapter graph</small><strong>Proven mappings</strong><span>Intent to Android and Web controls, fixtures, and states.</span></div>
+              <div class="deck-col"><small>Decision memory</small><strong>Trusted outcomes</strong><span>Evidence history, accepted variances, and failure patterns.</span></div>
+            </div>
+            <span class="deck-page">8</span>
+          </article>
+
+          <article class="deck-slide" data-slide="9" aria-label="Slide 9 of 10">
+            <h2>Trust unlocks an accessibility workflow with agency</h2>
+            <div class="deck-cols">
+              <div class="deck-col"><small>Prove</small><strong>Semantic golden path</strong><span>Live Saaras, mapped Android + Web, evidence-backed verdict.</span></div>
+              <div class="deck-col"><small>Enable</small><strong>Accessibility pilot</strong><span>Blind tester authors, runs, and hears one screen-reader parity verdict.</span></div>
+              <div class="deck-col"><small>Scale</small><strong>Contract + CI</strong><span>More journeys, history, policy exports, iOS, mWeb, remote workers.</span></div>
+            </div>
+            <span class="deck-page">9</span>
+          </article>
+
+          <article class="deck-slide deck-end" data-slide="10" aria-label="Slide 10 of 10">
+            <div class="deck-kicker">B</div>
+            <h2>One journey.<br>Two platforms.<br>One reviewable truth.</h2>
+            <p>Voice-authored<br>Evidence-backed<br>Intent-first</p>
+          </article>
+
           <div class="deck-tradeoff" id="deck-tradeoff" role="note" aria-live="polite">
             <b>Accessibility pilot boundary</b>
             <span>We use deterministic, human-reviewed Hindi verdict templates, so Sarvam Translate is not required. Translate becomes relevant only if we expand to dynamic explanations or arbitrary journeys.</span>
@@ -386,19 +568,23 @@
     document.querySelector(`[data-view="${initialView}"]`)?.click();
   }
 
-  const slide = document.getElementById('deck-slide');
+  const deckSlides = document.querySelectorAll('.deck-slide');
   const slideCount = document.getElementById('deck-count');
   const deckTradeoff = document.getElementById('deck-tradeoff');
   const totalSlides = 10;
   let currentSlide = 1;
   const showSlide = number => {
     currentSlide = ((number - 1 + totalSlides) % totalSlides) + 1;
-    slide.src = `slides/slide-${currentSlide}.png`;
-    slide.alt = `Bandersnatch presentation slide ${currentSlide} of ${totalSlides}`;
+    deckSlides.forEach(item => {
+      const isCurrent = Number(item.dataset.slide) === currentSlide;
+      item.classList.toggle('active', isCurrent);
+      item.setAttribute('aria-hidden', isCurrent ? 'false' : 'true');
+    });
     slideCount.textContent = `${currentSlide} / ${totalSlides}`;
     deckTradeoff.classList.toggle('visible', currentSlide === 7);
     deckTradeoff.setAttribute('aria-hidden', currentSlide === 7 ? 'false' : 'true');
   };
+  showSlide(1);
   document.getElementById('deck-prev').addEventListener('click', () => showSlide(currentSlide - 1));
   document.getElementById('deck-next').addEventListener('click', () => showSlide(currentSlide + 1));
   document.addEventListener('keydown', event => {
