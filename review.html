@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Bandersnatch · Voice review</title>
+  <style>
+    :root{--ink:#14201a;--muted:#647069;--line:#d8ddd8;--paper:#f4f2eb;--card:#fff;--green:#176b4d;--red:#a33a32}
+    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px Inter,system-ui,sans-serif}
+    main{max-width:980px;margin:auto;padding:48px 22px 80px}header{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:28px}
+    h1{font-size:clamp(36px,6vw,68px);letter-spacing:-.055em;line-height:.95;margin:8px 0}h2{font-size:17px;margin:0 0 14px}
+    .eyebrow,.meta{font:600 11px ui-monospace,monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+    .badge{padding:8px 11px;border:1px solid var(--line);border-radius:999px;background:white}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}.wide{grid-column:1/-1}
+    textarea{width:100%;min-height:120px;border:1px solid var(--line);border-radius:12px;padding:13px;font:inherit;line-height:1.5;resize:vertical}
+    button,.upload{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:10px;padding:11px 15px;background:var(--green);color:white;font-weight:750;cursor:pointer}
+    button.secondary,.upload{background:white;color:var(--ink);border:1px solid var(--line)}button:disabled{opacity:.4;cursor:not-allowed}
+    .actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:13px}.upload input{display:none}.error{color:var(--red);font-weight:650}.success{color:var(--green);font-weight:700}
+    ol{padding-left:22px}li{padding:7px 0;border-bottom:1px solid #edf0ed}.result{font-size:28px;font-weight:850;letter-spacing:-.03em}
+    [hidden]{display:none!important}@media(max-width:700px){.grid{grid-template-columns:1fr}.wide{grid-column:auto}header{display:block}.badge{display:inline-block;margin-top:12px}}
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div><div class="eyebrow">M2 · Voice experience</div><h1>Review before<br>you run.</h1></div>
+    <div class="badge" id="status">Waiting for audio</div>
+  </header>
+  <div class="grid">
+    <section class="card">
+      <h2>1 · Speak or upload</h2>
+      <p>Describe the locked coupon journey in a supported Indian language. Audio stays server-side only for transcription.</p>
+      <div class="actions">
+        <button id="record">Start recording</button>
+        <label class="upload">Upload audio<input id="audio" type="file" accept=".wav,.ogg,.webm,audio/wav,audio/ogg,audio/webm"></label>
+      </div>
+      <p class="meta" id="language">Language will be detected automatically</p>
+    </section>
+    <section class="card">
+      <h2>2 · Review transcript</h2>
+      <textarea id="transcript" placeholder="The Sarvam translation will appear here. You can correct it before approval."></textarea>
+      <div class="actions"><button id="review" class="secondary">Validate transcript</button></div>
+      <p id="errors" class="error" role="alert"></p>
+    </section>
+    <section class="card wide">
+      <h2>3 · Approve the platform-neutral plan</h2>
+      <ol id="steps"><li>Waiting for a valid transcript.</li></ol>
+      <div class="actions"><button id="approve" disabled>Approve and run</button></div>
+      <p class="meta">Run stays locked until all four intents and a coupon literal are valid.</p>
+    </section>
+    <section class="card wide" id="result-card" hidden>
+      <h2>4 · Consistency result</h2>
+      <div class="result" id="verdict"></div>
+      <p id="reason"></p>
+      <p class="meta" id="divergence"></p>
+    </section>
+  </div>
+</main>
+<script>
+  const $=id=>document.getElementById(id);
+  let transcription=null,reviewState=null,recorder=null,chunks=[];
+  const setStatus=value=>$("status").textContent=value;
+  async function post(path,body){const response=await fetch(path,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(body)});const data=await response.json();if(!response.ok)throw new Error(data.error);return data}
+  async function transcribe(file){
+    setStatus("Transcribing…");$("errors").textContent="";
+    const extension="."+((file.name||"recording.webm").split(".").pop().toLowerCase());
+    const response=await fetch("/api/transcribe",{method:"POST",headers:{"x-audio-extension":extension},body:file});
+    const data=await response.json();if(!response.ok)throw new Error(data.error);
+    transcription=data;$("transcript").value=data.transcript;
+    $("language").textContent=`Detected ${data.languageCode||"unknown"}${data.languageProbability==null?"":` · ${Math.round(data.languageProbability*100)}% confidence`}`;
+    setStatus("Needs review");await validate();
+  }
+  async function validate(){
+    if(!transcription)transcription={transcript:$("transcript").value,evidenceMode:"manual"};
+    reviewState=await post("/api/review",{transcription,correctedTranscript:$("transcript").value});
+    $("errors").textContent=reviewState.errors.join(" ");
+    $("approve").disabled=reviewState.status!=="ready_for_approval";
+    $("steps").innerHTML=reviewState.plan?reviewState.plan.steps.map(step=>`<li><strong>${step.intent}</strong>${step.value?` · ${step.value}`:""}</li>`).join(""):"<li>Correct the transcript to generate the locked plan.</li>";
+    setStatus(reviewState.status==="ready_for_approval"?"Ready for approval":"Correction required");
+  }
+  $("review").onclick=()=>validate().catch(error=>$("errors").textContent=error.message);
+  $("audio").onchange=event=>transcribe(event.target.files[0]).catch(error=>{$("errors").textContent=error.message;setStatus("Transcription failed")});
+  $("record").onclick=async()=>{
+    if(recorder?.state==="recording"){recorder.stop();$("record").textContent="Start recording";return}
+    const stream=await navigator.mediaDevices.getUserMedia({audio:true});chunks=[];
+    recorder=new MediaRecorder(stream);recorder.ondataavailable=e=>chunks.push(e.data);
+    recorder.onstop=()=>{stream.getTracks().forEach(track=>track.stop());transcribe(new File(chunks,"recording.webm",{type:"audio/webm"})).catch(error=>$("errors").textContent=error.message)};
+    recorder.start();$("record").textContent="Stop and transcribe";setStatus("Recording…");
+  };
+  $("approve").onclick=async()=>{
+    $("approve").disabled=true;setStatus("Running both platforms…");
+    try{const data=await post("/api/approve-run",{review:reviewState});$("result-card").hidden=false;$("verdict").textContent=data.comparison.verdict.toUpperCase();$("reason").textContent=data.comparison.reason;$("divergence").textContent=`First divergence: ${data.comparison.firstDivergence||"none"}`;setStatus("Run complete")}
+    catch(error){$("errors").textContent=error.message;setStatus("Run blocked");$("approve").disabled=false}
+  };
+</script>
+</body>
+</html>
