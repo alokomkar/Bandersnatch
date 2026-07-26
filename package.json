@@ -1,0 +1,15 @@
+{
+  "name": "bandersnatch-m1",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "serve": "python3 -m http.server 4173 --bind 127.0.0.1",
+    "m1:demo": "node src/run-golden-path.mjs --mock",
+    "m1:live": "node src/run-golden-path.mjs --live",
+    "test": "node --test tests/core.test.mjs"
+  }
+}
