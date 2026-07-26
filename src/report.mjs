@@ -3,7 +3,7 @@ import { writeFile } from "node:fs/promises";
 const escape = (value) => String(value ?? "")
   .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
 
-export async function writeReport({ path, transcription, plan, android, web, comparison }) {
+export async function writeReport({ path, transcription, review, plan, android, web, comparison }) {
   const rows = comparison.rows ?? plan.steps.map((step, index) => ({
     intent: step.intent,
     android: android.steps?.[index],
@@ -27,8 +27,9 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:12px;bor
 <p class="${transcription.evidenceMode}">Voice: ${escape(transcription.evidenceMode)} · Android: ${escape(android.evidenceMode)} · Web: ${escape(web.evidenceMode)}</p>
 ${transcription.evidenceMode === "mock" ? "<p><b>Not acceptance-tested:</b> this run uses labeled mock adapters and must not be presented as live proof.</p>" : ""}
 </section>
-<section class="card"><b>Approved transcript</b><p>${escape(transcription.transcript)}</p>
-<div class="meta">${escape(transcription.model)} · ${escape(transcription.mode)} · ${escape(transcription.languageCode)}</div></section>
+<section class="card"><b>Original transcript</b><p>${escape(review?.originalTranscript ?? transcription.transcript)}</p>
+${review?.correctionApplied ? `<b>Approved correction</b><p>${escape(review.reviewedTranscript)}</p>` : ""}
+<div class="meta">${escape(transcription.model)} · ${escape(transcription.mode)} · detected ${escape(transcription.languageCode)}${transcription.languageProbability == null ? "" : ` · confidence ${escape(Math.round(transcription.languageProbability * 100))}%`}</div></section>
 <section class="card"><table><thead><tr><th>Intent</th><th>Android</th><th>Web</th><th>Consistency</th></tr></thead><tbody>
 ${rows.map((row) => `<tr><td>${escape(row.intent)}</td><td>${escape(row.android?.observedOutcome ?? "missing")}</td><td>${escape(row.web?.observedOutcome ?? "missing")}</td><td class="${row.consistent ? "yes" : "no"}">${row.consistent ? "Consistent" : "Divergent"}</td></tr>`).join("")}
 </tbody></table></section>

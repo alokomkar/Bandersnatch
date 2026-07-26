@@ -3,7 +3,12 @@ import { basename } from "node:path";
 
 const ENDPOINT = "https://api.sarvam.ai/speech-to-text";
 
-export async function transcribeWithSarvam({ audioPath, apiKey = process.env.SARVAM_API_KEY, timeoutMs = 20_000 }) {
+export async function transcribeWithSarvam({
+  audioPath,
+  apiKey = process.env.SARVAM_API_KEY,
+  languageCode = "unknown",
+  timeoutMs = 20_000,
+}) {
   if (!apiKey) throw new Error("SARVAM_API_KEY is required for live transcription.");
   const metadata = await stat(audioPath);
   if (!metadata.isFile() || metadata.size === 0) throw new Error("Audio file must exist and be non-empty.");
@@ -15,6 +20,7 @@ export async function transcribeWithSarvam({ audioPath, apiKey = process.env.SAR
   form.append("file", new Blob([audio], { type: mime }), basename(audioPath));
   form.append("model", "saaras:v3");
   form.append("mode", "translate");
+  form.append("language_code", languageCode);
 
   const response = await fetch(ENDPOINT, {
     method: "POST",
@@ -37,6 +43,7 @@ export async function transcribeWithSarvam({ audioPath, apiKey = process.env.SAR
     requestId: body.request_id ?? null,
     transcript: body.transcript,
     languageCode: body.language_code ?? null,
+    languageProbability: body.language_probability ?? null,
   };
 }
 
@@ -49,5 +56,6 @@ export function mockSarvamTranscript() {
     requestId: "mock-sarvam-request",
     transcript: "Open the cart, enter coupon SAVE10, apply the coupon, and verify that the discounted total is visible.",
     languageCode: "hi-IN",
+    languageProbability: 0.99,
   };
 }
