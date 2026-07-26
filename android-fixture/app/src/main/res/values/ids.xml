@@ -1,0 +1,9 @@
+<resources>
+    <item name="shop_title" type="id" />
+    <item name="open_cart" type="id" />
+    <item name="cart" type="id" />
+    <item name="coupon_input" type="id" />
+    <item name="apply_coupon" type="id" />
+    <item name="coupon_status" type="id" />
+    <item name="total" type="id" />
+</resources>

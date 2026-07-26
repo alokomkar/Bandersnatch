@@ -40,26 +40,3 @@ next-env.d.ts
 /.wrangler/
 /outputs/
 /work/
-/artifacts/
-/android-fixture/.gradle/
-/android-fixture/**/build/
-/android-fixture/local.properties
-
-# Unused generated Sites starter. The M1 implementation is the portable
-# standalone prototype in index.html plus src/.
-/.openai/
-/app/
-/build/
-/db/
-/drizzle/
-/examples/
-/public/
-/worker/
-/README.md
-/drizzle.config.ts
-/eslint.config.mjs
-/next.config.ts
-/postcss.config.mjs
-/tsconfig.json
-/vite.config.ts
-/tests/rendered-html.test.mjs
