@@ -87,8 +87,36 @@
     .non-goals{display:flex;flex-wrap:wrap;gap:7px}.non-goals span{padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:10px;color:var(--muted)}
     .phase-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.phase{position:relative;min-height:178px;padding:17px;border:1px solid var(--line);border-radius:14px;background:#f8f6f0}.phase:after{content:"→";position:absolute;right:-9px;top:47%;z-index:2;width:18px;height:18px;border:1px solid var(--line);border-radius:50%;background:var(--panel);display:grid;place-items:center;font:500 10px DM Mono;color:var(--muted)}.phase:nth-child(4):after,.phase:last-child:after{display:none}.phase span{font:500 10px DM Mono;color:var(--green);text-transform:uppercase}.phase strong{display:block;font-size:12px;margin:15px 0 7px}.phase p{font-size:10px;line-height:1.55;color:var(--muted);margin:0 0 16px}.phase b{position:absolute;left:17px;right:17px;bottom:15px;font-size:9px;color:var(--green)}.phase.current{background:var(--green);border-color:var(--green);color:white;box-shadow:0 10px 25px #1f684c25}.phase.current span,.phase.current p,.phase.current b{color:#e0f2e7}.phase.future{background:#efede7;border-style:dashed}
     .footnote{text-align:center;margin-top:34px;color:var(--muted);font:500 10px DM Mono}
+    .deck{max-width:1280px;margin:0 auto}
+    .deck-head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:22px}
+    .deck-head h1{font-size:clamp(32px,4vw,56px);margin:10px 0 0}
+    .deck-stage{position:relative;background:#101412;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);aspect-ratio:16/9;display:grid;place-items:center}
+    .deck-slide{width:100%;height:100%;object-fit:contain;display:block}
+    .deck-tradeoff{display:none;position:absolute;left:3.3%;right:3.3%;bottom:3.8%;padding:14px 18px;background:#181d1b;color:#fff;border-left:5px solid var(--lime);box-shadow:0 10px 28px rgba(0,0,0,.22);text-align:left}
+    .deck-tradeoff.visible{display:block}
+    .deck-tradeoff b{display:block;color:var(--lime);font:700 11px DM Mono;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+    .deck-tradeoff span{display:block;font-size:14px;line-height:1.45}
+    .deck-controls{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:18px}
+    .deck-button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:10px;padding:10px 16px;font-weight:800}
+    .deck-button:hover{border-color:var(--green);color:var(--green)}
+    .deck-count{min-width:92px;text-align:center;font:500 12px DM Mono;color:var(--muted)}
+    .deck-help{text-align:center;color:var(--muted);font-size:11px;margin-top:10px}
+    .access-hero{display:grid;grid-template-columns:1.05fr .95fr;gap:28px;align-items:stretch;margin-bottom:22px}
+    .access-copy{padding:32px}.access-copy h1{font-size:clamp(38px,5vw,66px);margin:14px 0 18px}
+    .spoken-journey{background:var(--ink);color:white;padding:28px;border-radius:22px;display:flex;flex-direction:column;justify-content:space-between}
+    .spoken-journey blockquote{font-size:22px;line-height:1.55;margin:18px 0;color:#f4f1e9}
+    .spoken-journey small{color:#aebbb5;line-height:1.5}
+    .access-flow{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:20px 0}
+    .access-step{position:relative;padding:18px 14px;background:var(--panel);border:1px solid var(--line);border-radius:14px;min-height:118px}
+    .access-step:not(:last-child):after{content:"→";position:absolute;right:-10px;top:46%;z-index:2;width:20px;height:20px;display:grid;place-items:center;border-radius:50%;background:var(--lime);font-size:11px;font-weight:800}
+    .access-step b{display:block;font-size:12px;margin-bottom:8px}.access-step span{font-size:10px;line-height:1.5;color:var(--muted)}
+    .access-result{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .access-result .card{padding:24px}.access-result h2{margin:0 0 16px;font-size:17px}
+    .check-row{display:grid;grid-template-columns:1.25fr .8fr .8fr;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);font-size:11px}
+    .check-row:first-of-type{font:500 10px DM Mono;text-transform:uppercase;color:var(--muted)}
+    .spoken-verdict{background:var(--green2);border-left:4px solid var(--green);padding:18px;border-radius:10px;font-size:13px;line-height:1.7}
     @media(max-width:1100px){.phase-grid{grid-template-columns:repeat(2,1fr)}.phase:nth-child(2n):after{display:none}}
-    @media(max-width:900px){header{padding:0 18px}.status{display:none}main{padding:30px 18px}.hero,.workspace,.prd-grid{grid-template-columns:1fr}.hero{gap:20px}.runner-grid{grid-template-columns:1fr}.runner:first-child{border-right:0;border-bottom:1px solid var(--line)}.prd-top{display:block}.lock{display:inline-block;margin-top:8px}.lock-table{grid-template-columns:120px 1fr}h1{font-size:43px}}
+    @media(max-width:900px){header{padding:0 18px;height:auto;min-height:72px;gap:12px;flex-wrap:wrap}.status{display:none}.tabs{overflow-x:auto}.tab{white-space:nowrap}main{padding:30px 18px}.hero,.workspace,.prd-grid,.access-hero,.access-result{grid-template-columns:1fr}.hero{gap:20px}.runner-grid{grid-template-columns:1fr}.runner:first-child{border-right:0;border-bottom:1px solid var(--line)}.prd-top{display:block}.lock{display:inline-block;margin-top:8px}.lock-table{grid-template-columns:120px 1fr}.access-flow{grid-template-columns:1fr}.access-step:not(:last-child):after{content:"↓";right:calc(50% - 10px);top:auto;bottom:-15px}h1{font-size:43px}}
     @media(max-width:580px){.phase-grid{grid-template-columns:1fr}.phase:after{display:none}}
   </style>
 </head>
@@ -99,6 +127,8 @@
     <nav class="tabs" aria-label="Demo views">
       <button class="tab active" data-view="product">Product demo</button>
       <button class="tab" data-view="prd">Visual PRD</button>
+      <button class="tab" data-view="accessibility">Accessibility</button>
+      <button class="tab" data-view="presentation">Presentation</button>
     </nav>
     <div class="status"><i></i> Interactive concept · local</div>
   </header>
@@ -264,13 +294,80 @@
             <div class="phase"><span>P2</span><strong>Evidence &amp; reliability</strong><p>Reset, state equivalence, first divergence, retry, three cases.</p><b>Exit · all three verdict paths verified</b></div>
             <div class="phase"><span>P3</span><strong>Integrated surface</strong><p>One independently usable Record → Review → Run → Report flow.</p><b>Exit · first-time user succeeds unaided</b></div>
             <div class="phase"><span>P4</span><strong>Demo hardening</strong><p>Fallback audio, saved report, repeated runs, timed rehearsals.</p><b>Exit · two successful 3-minute demos</b></div>
-            <div class="phase future"><span>P5</span><strong>Contract expansion</strong><p>Versioned schema, more deterministic actions, scenario library.</p><b>Exit · three different journeys</b></div>
-            <div class="phase future"><span>P6</span><strong>CI &amp; history</strong><p>Policy exits, compatibility checks, exports, approved variances.</p><b>Exit · reproducible semantic CI gate</b></div>
-            <div class="phase future"><span>P7</span><strong>Platform expansion</strong><p>iOS, mWeb, bounded visual/accessibility analysis, remote workers.</p><b>Exit · measured reliability per capability</b></div>
+            <div class="phase future"><span>P5</span><strong>Accessibility pilot</strong><p>Voice-authored screen-reader journey, focus evidence, Hindi spoken verdict.</p><b>Exit · tester completes it without sighted help</b></div>
+            <div class="phase future"><span>P6</span><strong>Contract expansion</strong><p>Versioned schema, more deterministic actions, scenario library.</p><b>Exit · three different journeys</b></div>
+            <div class="phase future"><span>P7</span><strong>CI &amp; history</strong><p>Policy exits, compatibility checks, exports, approved variances.</p><b>Exit · reproducible semantic CI gate</b></div>
+            <div class="phase future"><span>P8</span><strong>Platform expansion</strong><p>iOS, mWeb, bounded visual analysis, and remote workers.</p><b>Exit · measured reliability per capability</b></div>
           </div>
         </article>
       </div>
       <div class="footnote">SOURCE OF TRUTH · ../PRD.md + ../IDEA_SCOPE.md · Interactive review artifact</div>
+    </section>
+
+    <section class="view" id="accessibility">
+      <div class="access-hero">
+        <article class="card access-copy">
+          <div class="eyebrow">Product Phase 5 · concrete accessibility pilot</div>
+          <h1>Let the tester lead by voice.</h1>
+          <p class="lead">A blind or low-vision tester authors one screen-reader journey in Hindi, approves the same semantic plan, and hears where Android and Web stop offering an equivalent experience.</p>
+        </article>
+        <article class="spoken-journey">
+          <div>
+            <div class="eyebrow" style="color:var(--lime)">Hindi + literal test data</div>
+            <blockquote lang="hi">“कार्ट खोलो, कूपन फ़ील्ड ढूँढो, SAVE10 डालो, और जाँचो कि नया टोटल स्क्रीन रीडर में सुनाई देता है।”</blockquote>
+          </div>
+          <small>Saaras v3 translates the journey for the compiler while preserving <b>SAVE10</b>.</small>
+        </article>
+      </div>
+
+      <div class="access-flow" aria-label="Accessibility testing workflow">
+        <div class="access-step"><b>01 · Speak</b><span>Hindi or code-mixed journey through Saaras v3</span></div>
+        <div class="access-step"><b>02 · Approve</b><span>Accessible transcript and screen-reader intent plan</span></div>
+        <div class="access-step"><b>03 · Execute</b><span>Android and Web accessibility trees</span></div>
+        <div class="access-step"><b>04 · Compare</b><span>Name, reachability, focus, and announcement</span></div>
+        <div class="access-step"><b>05 · Hear</b><span>Hindi evidence summary through Bulbul v3</span></div>
+      </div>
+
+      <div class="access-result">
+        <article class="card">
+          <h2>Screen-reader parity evidence</h2>
+          <div class="check-row"><span>Checkpoint</span><span>Android</span><span>Web</span></div>
+          <div class="check-row"><b>Coupon field name</b><span class="pass">Coupon code</span><span class="pass">Coupon code</span></div>
+          <div class="check-row"><b>Apply reachable</b><span class="pass">Passed</span><span class="pass">Passed</span></div>
+          <div class="check-row"><b>Focus after submit</b><span class="pass">Result</span><span class="fail">Page top</span></div>
+          <div class="check-row"><b>New total announced</b><span class="pass">₹1,799</span><span class="fail">Silent</span></div>
+        </article>
+        <article class="card">
+          <h2>Spoken Hindi verdict</h2>
+          <div class="spoken-verdict" lang="hi"><b>वेब पर गंभीर पहुँच बाधा मिली।</b><br>कूपन लागू हुआ, लेकिन नया टोटल स्क्रीन रीडर में नहीं बताया गया। पहली बाधा: परिणाम की घोषणा।</div>
+          <p style="font-size:12px;line-height:1.7;color:var(--muted);margin:18px 0 0">Classification: <b class="fail">blocked on Web</b>. The visual report, transcript, and spoken summary remain equivalent outputs; voice is never the only path.</p>
+        </article>
+      </div>
+      <div class="footnote">PHASE 5 EXIT · A TESTER CAN SPEAK, APPROVE, RUN, AND HEAR THE VERDICT WITHOUT SIGHTED ASSISTANCE</div>
+    </section>
+
+    <section class="view" id="presentation">
+      <div class="deck">
+        <div class="deck-head">
+          <div>
+            <div class="eyebrow">Hackathon deck · 10 slides</div>
+            <h1>Bandersnatch presentation</h1>
+          </div>
+        </div>
+        <div class="deck-stage">
+          <img class="deck-slide" id="deck-slide" src="slides/slide-1.png" alt="Bandersnatch presentation slide 1 of 10">
+          <div class="deck-tradeoff" id="deck-tradeoff" role="note" aria-live="polite">
+            <b>Accessibility pilot boundary</b>
+            <span>We use deterministic, human-reviewed Hindi verdict templates, so Sarvam Translate is not required. Translate becomes relevant only if we expand to dynamic explanations or arbitrary journeys.</span>
+          </div>
+        </div>
+        <div class="deck-controls" aria-label="Presentation controls">
+          <button class="deck-button" id="deck-prev" type="button">← Previous</button>
+          <span class="deck-count" id="deck-count">1 / 10</span>
+          <button class="deck-button" id="deck-next" type="button">Next →</button>
+        </div>
+        <div class="deck-help">Use the left and right arrow keys to navigate.</div>
+      </div>
     </section>
   </main>
 </div>
@@ -284,7 +381,34 @@
     document.getElementById(tab.dataset.view).classList.add('active');
     history.replaceState(null, '', '#' + tab.dataset.view);
   }));
-  if (location.hash === '#prd') document.querySelector('[data-view="prd"]').click();
+  const initialView = location.hash.slice(1);
+  if (document.getElementById(initialView)) {
+    document.querySelector(`[data-view="${initialView}"]`)?.click();
+  }
+
+  const slide = document.getElementById('deck-slide');
+  const slideCount = document.getElementById('deck-count');
+  const deckTradeoff = document.getElementById('deck-tradeoff');
+  const totalSlides = 10;
+  let currentSlide = 1;
+  const showSlide = number => {
+    currentSlide = ((number - 1 + totalSlides) % totalSlides) + 1;
+    slide.src = `slides/slide-${currentSlide}.png`;
+    slide.alt = `Bandersnatch presentation slide ${currentSlide} of ${totalSlides}`;
+    slideCount.textContent = `${currentSlide} / ${totalSlides}`;
+    deckTradeoff.classList.toggle('visible', currentSlide === 7);
+    deckTradeoff.setAttribute('aria-hidden', currentSlide === 7 ? 'false' : 'true');
+  };
+  document.getElementById('deck-prev').addEventListener('click', () => showSlide(currentSlide - 1));
+  document.getElementById('deck-next').addEventListener('click', () => showSlide(currentSlide + 1));
+  document.addEventListener('keydown', event => {
+    if (!document.getElementById('presentation').classList.contains('active')) return;
+    if (event.key === 'ArrowLeft') showSlide(currentSlide - 1);
+    if (event.key === 'ArrowRight' || event.key === ' ') {
+      event.preventDefault();
+      showSlide(currentSlide + 1);
+    }
+  });
 
   const mic = document.getElementById('mic');
   let recording = false;
