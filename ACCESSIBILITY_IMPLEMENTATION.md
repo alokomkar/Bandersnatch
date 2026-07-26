@@ -56,7 +56,7 @@ Scope cut: Chromium and the controlled fixture only.
 
 ### A3 — Android accessibility evidence
 
-Status: **Acceptance-tested locally; PR review pending.**
+Status: **Acceptance-tested and merged.**
 
 Deliver:
 
@@ -73,7 +73,7 @@ Scope cut: one connected Android device and the controlled fixture. Actual TalkB
 
 ### A4 — Joined accessible report
 
-Status: **Acceptance-tested locally.** All three joined verdict paths render aligned Android/Web evidence, equivalent Hindi text and live Bulbul audio, keyboard-operable playback speed, and an explicit screen-reader evidence boundary.
+Status: **Acceptance-tested locally; merge pending.** All three joined verdict paths render aligned Android/Web evidence, equivalent Hindi text and live Bulbul audio, keyboard-operable playback speed, and an explicit screen-reader evidence boundary.
 
 Deliver:
 
@@ -90,7 +90,7 @@ Scope cut: deterministic verdict templates only.
 
 ### A5 — Repetition and demo hardening
 
-Status: **Acceptance-tested locally; external demo checks remain.** Five English baseline recordings are media-validated, and three consecutive end-to-end runs each produced correct `consistent`, `inconsistent`, and `incomparable` reports with playable Hindi audio.
+Status: **Acceptance-tested locally; external demo checks remain.** Five English baseline recordings are media-validated, three consecutive end-to-end runs each produced correct `consistent`, `inconsistent`, and `incomparable` reports with playable Hindi audio, and the three public fixture URLs return HTTP 200. Another-device verification, real screen-reader acceptance, and two timed human rehearsals remain.
 
 Deliver:
 
