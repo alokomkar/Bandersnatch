@@ -8,6 +8,7 @@
   },
   "scripts": {
     "serve": "python3 -m http.server 4173 --bind 127.0.0.1",
+    "serve:fixture": "python3 -m http.server 4176 --bind 127.0.0.1 --directory fixtures",
     "serve:review": "node src/review-server.mjs",
     "m1:demo": "node src/run-golden-path.mjs --mock",
     "m1:live": "node src/run-golden-path.mjs --live",

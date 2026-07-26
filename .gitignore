@@ -41,6 +41,9 @@ next-env.d.ts
 /outputs/
 /work/
 /artifacts/
+/android-fixture/.gradle/
+/android-fixture/**/build/
+/android-fixture/local.properties
 
 # Unused generated Sites starter. The M1 implementation is the portable
 # standalone prototype in index.html plus src/.

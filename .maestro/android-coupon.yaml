@@ -1,0 +1,16 @@
+appId: com.bandersnatch.fixture
+---
+- launchApp:
+    clearState: true
+- tapOn:
+    id: "com.bandersnatch.fixture:id/open_cart"
+- assertVisible:
+    id: "com.bandersnatch.fixture:id/cart"
+- tapOn:
+    id: "com.bandersnatch.fixture:id/coupon_input"
+- inputText: "SAVE10"
+- tapOn:
+    id: "com.bandersnatch.fixture:id/apply_coupon"
+- assertVisible: "Coupon SAVE10 applied"
+- assertVisible: "Total: ₹1,799"
+- takeScreenshot: "android-coupon-success"
